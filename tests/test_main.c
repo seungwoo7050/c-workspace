@@ -30,5 +30,6 @@ int	test_finish(void)
 int	main(void)
 {
 	test_char();
+	test_memory_fill();
 	return (test_finish());
 }
