@@ -15,8 +15,10 @@ SRC := \
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP := $(OBJ:.o=.d)
+TEST_BIN := tests/bin/test_libft
+TEST_SRC := $(wildcard tests/test_*.c)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
 
 all: $(NAME)
 
@@ -27,8 +29,15 @@ $(OBJ_DIR)/%.o: %.c libft.h
 	@$(MKDIR) $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
 
+$(TEST_BIN): $(NAME) $(TEST_SRC) tests/test.h
+	@$(MKDIR) $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(TEST_SRC) $(NAME) -o $@
+
+test: $(TEST_BIN)
+	./$(TEST_BIN)
+
 clean:
-	$(RMDIR) build
+	$(RMDIR) build tests/bin
 
 fclean: clean
 	$(RM) $(NAME)
