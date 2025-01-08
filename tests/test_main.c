@@ -31,5 +31,6 @@ int	main(void)
 {
 	test_char();
 	test_memory_fill();
+	test_memory_copy();
 	return (test_finish());
 }
