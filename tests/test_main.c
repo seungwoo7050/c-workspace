@@ -34,5 +34,6 @@ int	main(void)
 	test_memory_copy();
 	test_memory_move();
 	test_memory_scan();
+	test_string_bounds();
 	return (test_finish());
 }
