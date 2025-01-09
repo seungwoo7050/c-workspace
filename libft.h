@@ -18,4 +18,8 @@ void	*ft_memmove(void *destination, const void *source, size_t length);
 void	*ft_memchr(const void *memory, int byte, size_t length);
 int		ft_memcmp(const void *left, const void *right, size_t length);
 
+size_t	ft_strlen(const char *text);
+size_t	ft_strlcpy(char *destination, const char *source, size_t capacity);
+size_t	ft_strlcat(char *destination, const char *source, size_t capacity);
+
 #endif
