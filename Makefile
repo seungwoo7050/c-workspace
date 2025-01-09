@@ -13,7 +13,8 @@ MKDIR := mkdir -p
 SRC := \
 	src/char/ft_char.c \
 	src/memory/ft_memory_fill.c \
-	src/memory/ft_memory_copy.c
+	src/memory/ft_memory_copy.c \
+	src/memory/ft_memory_move.c
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP := $(OBJ:.o=.d)

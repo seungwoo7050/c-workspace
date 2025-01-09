@@ -14,5 +14,6 @@ int	ft_tolower(int c);
 void	*ft_memset(void *memory, int byte, size_t length);
 void	ft_bzero(void *memory, size_t length);
 void	*ft_memcpy(void *destination, const void *source, size_t length);
+void	*ft_memmove(void *destination, const void *source, size_t length);
 
 #endif
