@@ -33,5 +33,6 @@ int	main(void)
 	test_memory_fill();
 	test_memory_copy();
 	test_memory_move();
+	test_memory_scan();
 	return (test_finish());
 }

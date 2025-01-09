@@ -8,6 +8,7 @@ void	test_char(void);
 void	test_memory_fill(void);
 void	test_memory_copy(void);
 void	test_memory_move(void);
+void	test_memory_scan(void);
 
 # define CHECK(expression) \
 	test_check((expression), #expression, __FILE__, __LINE__)
