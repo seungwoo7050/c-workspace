@@ -10,6 +10,7 @@ void	test_memory_copy(void);
 void	test_memory_move(void);
 void	test_memory_scan(void);
 void	test_string_bounds(void);
+void	test_string_search(void);
 
 # define CHECK(expression) \
 	test_check((expression), #expression, __FILE__, __LINE__)
