@@ -36,5 +36,6 @@ int	main(void)
 	test_memory_scan();
 	test_string_bounds();
 	test_string_search();
+	test_atoi();
 	return (test_finish());
 }
