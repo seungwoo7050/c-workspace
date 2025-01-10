@@ -25,5 +25,6 @@ char	*ft_strchr(const char *text, int character);
 char	*ft_strrchr(const char *text, int character);
 int		ft_strncmp(const char *left, const char *right, size_t length);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t length);
+int		ft_atoi(const char *text);
 
 #endif

@@ -17,7 +17,8 @@ SRC := \
 	src/memory/ft_memory_move.c \
 	src/memory/ft_memory_scan.c \
 	src/string/ft_string_bounds.c \
-	src/string/ft_string_search.c
+	src/string/ft_string_search.c \
+	src/convert/ft_atoi.c
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP := $(OBJ:.o=.d)
