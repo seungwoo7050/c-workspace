@@ -27,4 +27,7 @@ int		ft_strncmp(const char *left, const char *right, size_t length);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t length);
 int		ft_atoi(const char *text);
 
+void	*ft_calloc(size_t count, size_t size);
+char	*ft_strdup(const char *text);
+
 #endif
