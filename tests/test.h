@@ -12,6 +12,7 @@ void	test_memory_scan(void);
 void	test_string_bounds(void);
 void	test_string_search(void);
 void	test_atoi(void);
+void	test_allocate(void);
 
 # define CHECK(expression) \
 	test_check((expression), #expression, __FILE__, __LINE__)

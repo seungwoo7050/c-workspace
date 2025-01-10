@@ -37,5 +37,6 @@ int	main(void)
 	test_string_bounds();
 	test_string_search();
 	test_atoi();
+	test_allocate();
 	return (test_finish());
 }
