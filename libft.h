@@ -21,5 +21,7 @@ int		ft_memcmp(const void *left, const void *right, size_t length);
 size_t	ft_strlen(const char *text);
 size_t	ft_strlcpy(char *destination, const char *source, size_t capacity);
 size_t	ft_strlcat(char *destination, const char *source, size_t capacity);
+char	*ft_strchr(const char *text, int character);
+char	*ft_strrchr(const char *text, int character);
 
 #endif
