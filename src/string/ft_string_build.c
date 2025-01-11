@@ -21,3 +21,24 @@ char	*ft_substr(const char *text, unsigned int start, size_t length)
 	substring[length] = '\0';
 	return (substring);
 }
+
+char	*ft_strjoin(const char *left, const char *right)
+{
+	char	*joined;
+	size_t	left_length;
+	size_t	right_length;
+
+	if (left == NULL || right == NULL)
+		return (NULL);
+	left_length = ft_strlen(left);
+	right_length = ft_strlen(right);
+	if (right_length == (size_t)-1
+		|| left_length > (size_t)-2 - right_length)
+		return (NULL);
+	joined = malloc(left_length + right_length + 1);
+	if (joined == NULL)
+		return (NULL);
+	ft_memcpy(joined, left, left_length);
+	ft_memcpy(joined + left_length, right, right_length + 1);
+	return (joined);
+}
