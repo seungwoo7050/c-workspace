@@ -29,5 +29,6 @@ int		ft_atoi(const char *text);
 
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *text);
+char	*ft_substr(const char *text, unsigned int start, size_t length);
 
 #endif
