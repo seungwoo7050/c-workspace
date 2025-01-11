@@ -42,3 +42,36 @@ char	*ft_strjoin(const char *left, const char *right)
 	ft_memcpy(joined + left_length, right, right_length + 1);
 	return (joined);
 }
+
+static int	is_in_set(char character, const char *set)
+{
+	while (*set != '\0')
+	{
+		if (*set == character)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+char	*ft_strtrim(const char *text, const char *set)
+{
+	char	*trimmed;
+	size_t	start;
+	size_t	end;
+
+	if (text == NULL || set == NULL)
+		return (NULL);
+	start = 0;
+	while (text[start] != '\0' && is_in_set(text[start], set))
+		start++;
+	end = ft_strlen(text);
+	while (end > start && is_in_set(text[end - 1], set))
+		end--;
+	trimmed = malloc(end - start + 1);
+	if (trimmed == NULL)
+		return (NULL);
+	ft_memcpy(trimmed, text + start, end - start);
+	trimmed[end - start] = '\0';
+	return (trimmed);
+}
