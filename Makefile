@@ -19,6 +19,7 @@ SRC := \
 	src/string/ft_string_bounds.c \
 	src/string/ft_string_search.c \
 	src/string/ft_string_build.c \
+	src/string/ft_split.c \
 	src/convert/ft_atoi.c \
 	src/alloc/ft_allocate.c
 OBJ_DIR := build/obj
