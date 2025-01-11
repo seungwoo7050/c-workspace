@@ -38,5 +38,6 @@ int	main(void)
 	test_string_search();
 	test_atoi();
 	test_allocate();
+	test_string_build();
 	return (test_finish());
 }
