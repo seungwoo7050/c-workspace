@@ -23,7 +23,8 @@ SRC := \
 	src/string/ft_string_transform.c \
 	src/convert/ft_atoi.c \
 	src/convert/ft_itoa.c \
-	src/alloc/ft_allocate.c
+	src/alloc/ft_allocate.c \
+	src/io/ft_fd_output.c
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP := $(OBJ:.o=.d)

@@ -37,4 +37,9 @@ char	*ft_itoa(int number);
 char	*ft_strmapi(const char *text, char (*function)(unsigned int, char));
 void	ft_striteri(char *text, void (*function)(unsigned int, char *));
 
+void	ft_putchar_fd(char character, int fd);
+void	ft_putstr_fd(char *text, int fd);
+void	ft_putendl_fd(char *text, int fd);
+void	ft_putnbr_fd(int number, int fd);
+
 #endif
