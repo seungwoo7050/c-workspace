@@ -20,6 +20,7 @@ SRC := \
 	src/string/ft_string_search.c \
 	src/string/ft_string_build.c \
 	src/string/ft_split.c \
+	src/string/ft_string_transform.c \
 	src/convert/ft_atoi.c \
 	src/convert/ft_itoa.c \
 	src/alloc/ft_allocate.c
