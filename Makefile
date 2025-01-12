@@ -21,6 +21,7 @@ SRC := \
 	src/string/ft_string_build.c \
 	src/string/ft_split.c \
 	src/convert/ft_atoi.c \
+	src/convert/ft_itoa.c \
 	src/alloc/ft_allocate.c
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)

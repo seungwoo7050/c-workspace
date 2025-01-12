@@ -33,5 +33,6 @@ char	*ft_substr(const char *text, unsigned int start, size_t length);
 char	*ft_strjoin(const char *left, const char *right);
 char	*ft_strtrim(const char *text, const char *set);
 char	**ft_split(const char *text, char delimiter);
+char	*ft_itoa(int number);
 
 #endif
