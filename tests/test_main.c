@@ -39,5 +39,6 @@ int	main(void)
 	test_atoi();
 	test_allocate();
 	test_string_build();
+	test_split();
 	return (test_finish());
 }
