@@ -40,5 +40,6 @@ int	main(void)
 	test_allocate();
 	test_string_build();
 	test_split();
+	test_itoa();
 	return (test_finish());
 }
