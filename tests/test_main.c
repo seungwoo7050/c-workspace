@@ -42,5 +42,6 @@ int	main(void)
 	test_split();
 	test_itoa();
 	test_string_transform();
+	test_fd_output();
 	return (test_finish());
 }
