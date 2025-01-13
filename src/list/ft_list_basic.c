@@ -43,3 +43,18 @@ t_list	*ft_lstlast(t_list *list)
 		list = list->next;
 	return (list);
 }
+
+void	ft_lstadd_back(t_list **list, t_list *node)
+{
+	t_list	*last;
+
+	if (list == NULL || node == NULL)
+		return ;
+	if (*list == NULL)
+	{
+		*list = node;
+		return ;
+	}
+	last = ft_lstlast(*list);
+	last->next = node;
+}
