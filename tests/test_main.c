@@ -44,5 +44,6 @@ int	main(void)
 	test_string_transform();
 	test_fd_output();
 	test_list_basic();
+	test_list_lifecycle();
 	return (test_finish());
 }
