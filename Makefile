@@ -25,7 +25,8 @@ SRC := \
 	src/convert/ft_itoa.c \
 	src/alloc/ft_allocate.c \
 	src/io/ft_fd_output.c \
-	src/list/ft_list_basic.c
+	src/list/ft_list_basic.c \
+	src/list/ft_list_lifecycle.c
 OBJ_DIR := build/obj
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP := $(OBJ:.o=.d)

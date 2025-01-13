@@ -53,5 +53,8 @@ void	ft_lstadd_front(t_list **list, t_list *node);
 int		ft_lstsize(t_list *list);
 t_list	*ft_lstlast(t_list *list);
 void	ft_lstadd_back(t_list **list, t_list *node);
+void	ft_lstdelone(t_list *node, void (*del)(void *));
+void	ft_lstclear(t_list **list, void (*del)(void *));
+void	ft_lstiter(t_list *list, void (*function)(void *));
 
 #endif
