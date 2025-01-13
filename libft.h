@@ -3,13 +3,19 @@
 
 # include <stddef.h>
 
-int	ft_isalpha(int c);
-int	ft_isdigit(int c);
-int	ft_isalnum(int c);
-int	ft_isascii(int c);
-int	ft_isprint(int c);
-int	ft_toupper(int c);
-int	ft_tolower(int c);
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+} t_list;
+
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+int		ft_isalnum(int c);
+int		ft_isascii(int c);
+int		ft_isprint(int c);
+int		ft_toupper(int c);
+int		ft_tolower(int c);
 
 void	*ft_memset(void *memory, int byte, size_t length);
 void	ft_bzero(void *memory, size_t length);
@@ -41,5 +47,8 @@ void	ft_putchar_fd(char character, int fd);
 void	ft_putstr_fd(char *text, int fd);
 void	ft_putendl_fd(char *text, int fd);
 void	ft_putnbr_fd(int number, int fd);
+
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_front(t_list **list, t_list *node);
 
 #endif
