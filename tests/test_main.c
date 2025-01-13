@@ -43,5 +43,6 @@ int	main(void)
 	test_itoa();
 	test_string_transform();
 	test_fd_output();
+	test_list_basic();
 	return (test_finish());
 }

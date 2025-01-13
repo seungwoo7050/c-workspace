@@ -18,6 +18,7 @@ void	test_split(void);
 void	test_itoa(void);
 void	test_string_transform(void);
 void	test_fd_output(void);
+void	test_list_basic(void);
 
 # define CHECK(expression) \
 	test_check((expression), #expression, __FILE__, __LINE__)
