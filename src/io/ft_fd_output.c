@@ -18,29 +18,23 @@ void	ft_putendl_fd(char *text, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
+static void	put_unsigned(unsigned int magnitude, int fd)
+{
+	if (magnitude >= 10U)
+		put_unsigned(magnitude / 10U, fd);
+	ft_putchar_fd((char)('0' + magnitude % 10U), fd);
+}
+
 void	ft_putnbr_fd(int number, int fd)
 {
-	char		buffer[11];
 	unsigned int	magnitude;
-	size_t		index;
 
 	if (number < 0)
+	{
+		ft_putchar_fd('-', fd);
 		magnitude = (unsigned int)(-(number + 1)) + 1U;
+	}
 	else
 		magnitude = (unsigned int)number;
-	index = sizeof(buffer);
-	while (magnitude >= 10U)
-	{
-		index--;
-		buffer[index] = (char)('0' + magnitude % 10U);
-		magnitude /= 10U;
-	}
-	index--;
-	buffer[index] = (char)('0' + magnitude);
-	if (number < 0)
-	{
-		index--;
-		buffer[index] = '-';
-	}
-	(void)write(fd, buffer + index, sizeof(buffer) - index);
+	put_unsigned(magnitude, fd);
 }
