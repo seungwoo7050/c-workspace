@@ -45,5 +45,6 @@ int	main(void)
 	test_fd_output();
 	test_list_basic();
 	test_list_lifecycle();
+	test_list_map();
 	return (test_finish());
 }

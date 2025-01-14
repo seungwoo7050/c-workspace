@@ -20,6 +20,7 @@ void	test_string_transform(void);
 void	test_fd_output(void);
 void	test_list_basic(void);
 void	test_list_lifecycle(void);
+void	test_list_map(void);
 
 # define CHECK(expression) \
 	test_check((expression), #expression, __FILE__, __LINE__)
