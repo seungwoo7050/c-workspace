@@ -7,7 +7,7 @@ char	*ft_strmapi(const char *text,
 {
 	char		*mapped;
 	size_t		length;
-	unsigned int	index;
+	size_t		index;
 
 	if (text == NULL || function == NULL)
 		return (NULL);
@@ -16,9 +16,9 @@ char	*ft_strmapi(const char *text,
 	if (mapped == NULL)
 		return (NULL);
 	index = 0;
-	while ((size_t)index < length)
+	while (index < length)
 	{
-		mapped[index] = function(index, text[index]);
+		mapped[index] = function((unsigned int)index, text[index]);
 		index++;
 	}
 	mapped[index] = '\0';
@@ -28,15 +28,15 @@ char	*ft_strmapi(const char *text,
 void	ft_striteri(char *text, void (*function)(unsigned int, char *))
 {
 	size_t		length;
-	unsigned int	index;
+	size_t		index;
 
 	if (text == NULL || function == NULL)
 		return ;
 	length = ft_strlen(text);
 	index = 0;
-	while ((size_t)index < length)
+	while (index < length)
 	{
-		function(index, text + index);
+		function((unsigned int)index, text + index);
 		index++;
 	}
 }
