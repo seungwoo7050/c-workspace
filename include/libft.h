@@ -3,8 +3,7 @@
 
 # include <stddef.h>
 
-typedef struct s_list
-{
+typedef struct s_list {
 	void			*content;
 	struct s_list	*next;
 } t_list;
@@ -56,7 +55,6 @@ void	ft_lstadd_back(t_list **list, t_list *node);
 void	ft_lstdelone(t_list *node, void (*del)(void *));
 void	ft_lstclear(t_list **list, void (*del)(void *));
 void	ft_lstiter(t_list *list, void (*function)(void *));
-t_list	*ft_lstmap(t_list *list, void *(*function)(void *),
-			void (*del)(void *));
+t_list	*ft_lstmap(t_list *list, void *(*function)(void *), void (*del)(void *));
 
 #endif

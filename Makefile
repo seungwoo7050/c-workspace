@@ -1,63 +1,51 @@
-NAME := libft.a
+CC      	?= cc
+CFLAGS  	?= -std=c99 -Wall -Wextra -Werror -pedantic -Iinclude -MMD -MP
+AR      	?= ar
+ARFLAGS 	?= rcs
+ASAN_FLAGS  ?= -fsanitize=address,undefined -g -O0
 
-CC := cc
-CFLAGS := -Wall -Wextra -Werror -std=c99 -pedantic
-CPPFLAGS := -I.
-DEPFLAGS := -MMD -MP
-AR := ar
-ARFLAGS := rcs
-RM := rm -f
-RMDIR := rm -rf
-MKDIR := mkdir -p
+SRCS    	:= $(wildcard src/*/*.c)
+BIN_DIR 	:= build
+TARGET  	:= libft.a
+OBJS    	:= $(patsubst %.c,$(BIN_DIR)/%.o,$(SRCS))
+DEPS    	:= $(OBJS:.o=.d)
 
-SRC := \
-	src/char/ft_char.c \
-	src/memory/ft_memory_fill.c \
-	src/memory/ft_memory_copy.c \
-	src/memory/ft_memory_move.c \
-	src/memory/ft_memory_scan.c \
-	src/string/ft_string_bounds.c \
-	src/string/ft_string_search.c \
-	src/string/ft_string_build.c \
-	src/string/ft_split.c \
-	src/string/ft_string_transform.c \
-	src/convert/ft_atoi.c \
-	src/convert/ft_itoa.c \
-	src/alloc/ft_allocate.c \
-	src/io/ft_fd_output.c \
-	src/list/ft_list_basic.c \
-	src/list/ft_list_lifecycle.c \
-	src/list/ft_list_map.c
-OBJ_DIR := build/obj
-OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
-DEP := $(OBJ:.o=.d)
-TEST_BIN := tests/bin/test_libft
-TEST_SRC := $(wildcard tests/test_*.c)
+TEST_SRC		:= $(wildcard tests/test_*.c)
+TEST_BIN		:= $(BIN_DIR)/test_libft
+TEST_ASAN_BIN	:= $(BIN_DIR)/test_libft_asan
 
-.PHONY: all clean fclean re test
+.PHONY: all test test-asan clean re
 
-all: $(NAME)
+all: $(BIN_DIR)/$(TARGET)
 
-$(NAME): $(OBJ)
-	$(AR) $(ARFLAGS) $@ $(OBJ)
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
-$(OBJ_DIR)/%.o: %.c libft.h
-	@$(MKDIR) $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+$(BIN_DIR)/%.o: %.c include/libft.h | $(BIN_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TEST_BIN): $(NAME) $(TEST_SRC) tests/test.h
-	@$(MKDIR) $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(TEST_SRC) $(NAME) -o $@
+
+$(BIN_DIR)/$(TARGET): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $(OBJS)
 
 test: $(TEST_BIN)
-	./$(TEST_BIN)
+	@$(TEST_BIN)
+	@printf 'libft tests: PASS\n'
+
+test-asan: $(TEST_ASAN_BIN)
+	@$(TEST_ASAN_BIN)
+	@printf 'libft tests (ASAN): PASS\n'
+
+$(TEST_BIN): $(BIN_DIR)/$(TARGET) $(TEST_SRC) include/libft.h tests/test.h | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(TEST_SRC) $(BIN_DIR)/$(TARGET) -o $@
+
+$(TEST_ASAN_BIN): $(BIN_DIR)/$(TARGET) $(TEST_SRC) include/libft.h tests/test.h | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(ASAN_FLAGS) $(TEST_SRC) $(BIN_DIR)/$(TARGET) -o $@
 
 clean:
-	$(RMDIR) build tests/bin
+	rm -rf $(BIN_DIR)
 
-fclean: clean
-	$(RM) $(NAME)
+re: clean all
 
-re: fclean all
-
--include $(DEP)
+-include $(DEPS)
