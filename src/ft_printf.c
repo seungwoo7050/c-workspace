@@ -6,6 +6,7 @@ int	ft_printf(const char *format, ...)
 {
 	va_list	args;
 	t_printf	ctx;
+	t_format	fmt;
 
 	(void)args;
 	if (format == 0)
@@ -19,6 +20,20 @@ int	ft_printf(const char *format, ...)
 			if (ft_printf_putchar(&ctx, '%') < 0)
 				break ;
 			format += 2;
+		}
+		else if (*format == '%')
+		{
+			format = ft_printf_parse(format + 1, &fmt);
+			if (format == 0)
+			{
+				ctx.error = 1;
+				break ;
+			}
+			if (ft_printf_putchar(&ctx, '%') < 0)
+				break ;
+			if (fmt.spec != '\0' && fmt.spec != '%'
+				&& ft_printf_putchar(&ctx, fmt.spec) < 0)
+				break ;
 		}
 		else
 		{
