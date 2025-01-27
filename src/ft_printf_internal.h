@@ -3,6 +3,7 @@
 
 # include "ft_printf.h"
 
+# include <stdarg.h>
 # include <stddef.h>
 
 # define FT_FLAG_LEFT 1
@@ -32,5 +33,10 @@ int			ft_printf_write(t_printf *ctx, const char *buffer, size_t length);
 int			ft_printf_putchar(t_printf *ctx, char c);
 void		ft_printf_init_format(t_format *fmt);
 const char	*ft_printf_parse(const char *format, t_format *fmt);
+int			ft_printf_dispatch(t_printf *ctx, t_format *fmt, va_list *args);
+int			ft_printf_print_char(t_printf *ctx, t_format *fmt, int c);
+int			ft_printf_print_string(t_printf *ctx, t_format *fmt,
+				const char *string);
+int			ft_printf_print_percent(t_printf *ctx, t_format *fmt);
 
 #endif

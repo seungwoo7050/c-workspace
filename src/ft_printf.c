@@ -1,7 +1,5 @@
 #include "ft_printf_internal.h"
 
-#include <stdarg.h>
-
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
@@ -29,10 +27,7 @@ int	ft_printf(const char *format, ...)
 				ctx.error = 1;
 				break ;
 			}
-			if (ft_printf_putchar(&ctx, '%') < 0)
-				break ;
-			if (fmt.spec != '\0' && fmt.spec != '%'
-				&& ft_printf_putchar(&ctx, fmt.spec) < 0)
+			if (ft_printf_dispatch(&ctx, &fmt, &args) < 0)
 				break ;
 		}
 		else
