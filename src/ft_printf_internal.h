@@ -38,5 +38,8 @@ int			ft_printf_print_char(t_printf *ctx, t_format *fmt, int c);
 int			ft_printf_print_string(t_printf *ctx, t_format *fmt,
 				const char *string);
 int			ft_printf_print_percent(t_printf *ctx, t_format *fmt);
+int			ft_printf_print_signed(t_printf *ctx, t_format *fmt, int number);
+int			ft_printf_print_unsigned(t_printf *ctx, t_format *fmt,
+				unsigned int number);
 
 #endif
