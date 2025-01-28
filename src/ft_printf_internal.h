@@ -41,5 +41,9 @@ int			ft_printf_print_percent(t_printf *ctx, t_format *fmt);
 int			ft_printf_print_signed(t_printf *ctx, t_format *fmt, int number);
 int			ft_printf_print_unsigned(t_printf *ctx, t_format *fmt,
 				unsigned int number);
+int			ft_printf_print_hex(t_printf *ctx, t_format *fmt,
+				unsigned int number);
+int			ft_printf_print_pointer(t_printf *ctx, t_format *fmt,
+				void *pointer);
 
 #endif

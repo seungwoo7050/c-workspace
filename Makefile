@@ -12,7 +12,8 @@ SRC := src/ft_printf.c \
 	src/ft_parse.c \
 	src/ft_dispatch.c \
 	src/ft_text.c \
-	src/ft_number.c
+	src/ft_number.c \
+	src/ft_hex.c
 OBJ := $(SRC:.c=.o)
 HEADER := include/ft_printf.h src/ft_printf_internal.h
 
