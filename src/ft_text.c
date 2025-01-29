@@ -34,6 +34,8 @@ int	ft_printf_print_string(t_printf *ctx, t_format *fmt, const char *string)
 	if (string == 0)
 		string = "(null)";
 	length = ft_local_strlen(string);
+	if (fmt->has_precision && fmt->precision < (int)length)
+		length = (size_t)fmt->precision;
 	padding = fmt->width - (int)length;
 	if (!(fmt->flags & FT_FLAG_LEFT)
 		&& ft_printf_putnchar(ctx, ' ', padding) < 0)
@@ -49,10 +51,14 @@ int	ft_printf_print_string(t_printf *ctx, t_format *fmt, const char *string)
 int	ft_printf_print_percent(t_printf *ctx, t_format *fmt)
 {
 	int	padding;
+	char	pad_char;
 
 	padding = fmt->width - 1;
+	pad_char = ' ';
+	if ((fmt->flags & FT_FLAG_ZERO) && !(fmt->flags & FT_FLAG_LEFT))
+		pad_char = '0';
 	if (!(fmt->flags & FT_FLAG_LEFT)
-		&& ft_printf_putnchar(ctx, ' ', padding) < 0)
+		&& ft_printf_putnchar(ctx, pad_char, padding) < 0)
 		return (-1);
 	if (ft_printf_putchar(ctx, '%') < 0)
 		return (-1);
