@@ -31,6 +31,7 @@ typedef struct s_format
 void		ft_printf_init(t_printf *ctx, int fd);
 int			ft_printf_write(t_printf *ctx, const char *buffer, size_t length);
 int			ft_printf_putchar(t_printf *ctx, char c);
+int			ft_printf_putnchar(t_printf *ctx, char c, int length);
 void		ft_printf_init_format(t_format *fmt);
 const char	*ft_printf_parse(const char *format, t_format *fmt);
 int			ft_printf_dispatch(t_printf *ctx, t_format *fmt, va_list *args);

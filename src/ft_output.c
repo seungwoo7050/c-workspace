@@ -40,3 +40,14 @@ int	ft_printf_putchar(t_printf *ctx, char c)
 {
 	return (ft_printf_write(ctx, &c, 1));
 }
+
+int	ft_printf_putnchar(t_printf *ctx, char c, int length)
+{
+	while (length > 0)
+	{
+		if (ft_printf_putchar(ctx, c) < 0)
+			return (-1);
+		length--;
+	}
+	return (0);
+}
