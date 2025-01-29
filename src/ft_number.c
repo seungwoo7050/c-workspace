@@ -1,24 +1,50 @@
 #include "ft_printf_internal.h"
 
-static int	ft_print_unsigned_digits(t_printf *ctx, unsigned long number)
+static int	ft_decimal_digits(char *buffer, unsigned long number)
 {
-	char	buffer[20];
-	int		index;
+	char	reversed[20];
+	int		length;
 
-	index = 0;
+	length = 0;
 	if (number == 0)
-		buffer[index++] = '0';
+		reversed[length++] = '0';
 	while (number > 0)
 	{
-		buffer[index++] = (char)('0' + number % 10);
+		reversed[length++] = (char)('0' + number % 10);
 		number /= 10;
 	}
-	while (index > 0)
+	number = 0;
+	while (number < (unsigned long)length)
 	{
-		index--;
-		if (ft_printf_putchar(ctx, buffer[index]) < 0)
-			return (-1);
+		buffer[number] = reversed[length - 1 - number];
+		number++;
 	}
+	return (length);
+}
+
+static int	ft_write_decimal(t_printf *ctx, t_format *fmt,
+		const char *prefix, unsigned long number)
+{
+	char	digits[20];
+	int		digit_len;
+	int		prefix_len;
+	int		padding;
+
+	digit_len = ft_decimal_digits(digits, number);
+	prefix_len = 0;
+	while (prefix[prefix_len])
+		prefix_len++;
+	padding = fmt->width - prefix_len - digit_len;
+	if (!(fmt->flags & FT_FLAG_LEFT)
+		&& ft_printf_putnchar(ctx, ' ', padding) < 0)
+		return (-1);
+	if (ft_printf_write(ctx, prefix, (size_t)prefix_len) < 0)
+		return (-1);
+	if (ft_printf_write(ctx, digits, (size_t)digit_len) < 0)
+		return (-1);
+	if ((fmt->flags & FT_FLAG_LEFT)
+		&& ft_printf_putnchar(ctx, ' ', padding) < 0)
+		return (-1);
 	return (0);
 }
 
@@ -26,19 +52,13 @@ int	ft_printf_print_signed(t_printf *ctx, t_format *fmt, int number)
 {
 	long	value;
 
-	(void)fmt;
 	value = (long)number;
 	if (value < 0)
-	{
-		if (ft_printf_putchar(ctx, '-') < 0)
-			return (-1);
-		value = -value;
-	}
-	return (ft_print_unsigned_digits(ctx, (unsigned long)value));
+		return (ft_write_decimal(ctx, fmt, "-", (unsigned long)(-value)));
+	return (ft_write_decimal(ctx, fmt, "", (unsigned long)value));
 }
 
 int	ft_printf_print_unsigned(t_printf *ctx, t_format *fmt, unsigned int number)
 {
-	(void)fmt;
-	return (ft_print_unsigned_digits(ctx, (unsigned long)number));
+	return (ft_write_decimal(ctx, fmt, "", (unsigned long)number));
 }
