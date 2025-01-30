@@ -24,7 +24,7 @@ int	ft_printf_write(t_printf *ctx, const char *buffer, size_t length)
 			ctx->error = 1;
 			return (-1);
 		}
-		if (ctx->count > INT_MAX - (int)written)
+		if (written > INT_MAX || ctx->count > INT_MAX - (int)written)
 		{
 			ctx->error = 1;
 			return (-1);
