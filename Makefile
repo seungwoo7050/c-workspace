@@ -16,6 +16,7 @@ SRC := src/ft_printf.c \
 	src/ft_hex.c
 OBJ := $(SRC:.c=.o)
 HEADER := include/ft_printf.h src/ft_printf_internal.h
+TEST_BIN := tests/bin/test_ft_printf
 
 all: $(NAME)
 
@@ -25,13 +26,18 @@ $(NAME): $(OBJ)
 %.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
+test: $(NAME)
+	mkdir -p tests/bin
+	$(CC) $(CFLAGS) $(CPPFLAGS) tests/test_ft_printf.c $(NAME) -o $(TEST_BIN)
+	./$(TEST_BIN)
+
 clean:
 	$(RM) $(OBJ)
 	rm -rf tests/bin
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(TEST_BIN)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
