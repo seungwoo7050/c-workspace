@@ -46,6 +46,14 @@ void	ft_printf_init_format(t_format *fmt)
 	fmt->spec = '\0';
 }
 
+static void	ft_normalize_flags(t_format *fmt)
+{
+	if (fmt->flags & FT_FLAG_LEFT)
+		fmt->flags &= ~FT_FLAG_ZERO;
+	if (fmt->flags & FT_FLAG_PLUS)
+		fmt->flags &= ~FT_FLAG_SPACE;
+}
+
 const char	*ft_printf_parse(const char *format, t_format *fmt)
 {
 	int	flag;
@@ -70,5 +78,6 @@ const char	*ft_printf_parse(const char *format, t_format *fmt)
 	fmt->spec = *format;
 	if (*format)
 		format++;
+	ft_normalize_flags(fmt);
 	return (format);
 }

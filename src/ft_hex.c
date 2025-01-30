@@ -74,7 +74,17 @@ static int	ft_write_hex(t_printf *ctx, t_format *fmt, const char *prefix,
 
 int	ft_printf_print_hex(t_printf *ctx, t_format *fmt, unsigned int number)
 {
-	return (ft_write_hex(ctx, fmt, "", (unsigned long)number));
+	const char	*prefix;
+
+	prefix = "";
+	if ((fmt->flags & FT_FLAG_HASH) && number != 0)
+	{
+		if (fmt->spec == 'X')
+			prefix = "0X";
+		else
+			prefix = "0x";
+	}
+	return (ft_write_hex(ctx, fmt, prefix, (unsigned long)number));
 }
 
 int	ft_printf_print_pointer(t_printf *ctx, t_format *fmt, void *pointer)
