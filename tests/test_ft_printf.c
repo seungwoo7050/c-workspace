@@ -173,6 +173,19 @@ static void	run_parser_boundary_cases(void)
 	expect_field_error(__LINE__, "%.2147483648d");
 }
 
+static void	run_numeric_layout_cases(void)
+{
+	const char	*space_precision;
+
+	EXPECT_PRINTF("empty:'%#.0x' '%#.0X' '% .0d'", 0u, 0u, 0);
+	EXPECT_PRINTF("signed-zero:'%+08d'", 42);
+	EXPECT_PRINTF("hex-zero:'%#08x'", 42u);
+	EXPECT_PRINTF("hex-left-precision:'%-#10.4x'", 42u);
+	space_precision = "signed-space-precision:'% 08.5d'";
+	EXPECT_PRINTF(space_precision, 42);
+	EXPECT_PRINTF("hex-empty:'%#.0x'", 0u);
+}
+
 static void	run_error_cases(void)
 {
 	int	saved_stdout;
@@ -197,6 +210,7 @@ int	main(void)
 	run_core_cases();
 	run_bonus_cases();
 	run_parser_boundary_cases();
+	run_numeric_layout_cases();
 	run_error_cases();
 	dprintf(STDERR_FILENO, "ft_printf tests passed\n");
 	return (0);
