@@ -173,11 +173,31 @@ static void	run_parser_boundary_cases(void)
 	expect_field_error(__LINE__, "%.2147483648d");
 }
 
+static void	run_error_cases(void)
+{
+	int	saved_stdout;
+	int	result;
+
+	fflush(stdout);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdout < 0)
+		fail_test(__LINE__, "dup for write-error test failed");
+	if (close(STDOUT_FILENO) < 0)
+		fail_test(__LINE__, "close stdout failed");
+	result = ft_printf("closed stdout");
+	if (dup2(saved_stdout, STDOUT_FILENO) < 0)
+		fail_test(__LINE__, "stdout restore failed");
+	close(saved_stdout);
+	if (result != -1)
+		fail_test(__LINE__, "ft_printf did not report write failure");
+}
+
 int	main(void)
 {
 	run_core_cases();
 	run_bonus_cases();
 	run_parser_boundary_cases();
+	run_error_cases();
 	dprintf(STDERR_FILENO, "ft_printf tests passed\n");
 	return (0);
 }
