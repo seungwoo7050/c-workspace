@@ -2,6 +2,7 @@
 
 #include <limits.h>
 #include <stdint.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -205,6 +206,50 @@ static void	run_error_cases(void)
 		fail_test(__LINE__, "ft_printf did not report write failure");
 }
 
+static volatile sig_atomic_t	g_sigpipe_count;
+
+static void	count_sigpipe(int signal_number)
+{
+	(void)signal_number;
+	g_sigpipe_count++;
+}
+
+static void	run_sigpipe_policy_case(void)
+{
+	struct sigaction	before;
+	struct sigaction	after;
+	struct sigaction	action;
+	int				pipe_fd[2];
+	int				saved_stdout;
+	int				result;
+
+	memset(&action, 0, sizeof(action));
+	action.sa_handler = count_sigpipe;
+	sigemptyset(&action.sa_mask);
+	if (sigaction(SIGPIPE, &action, &before) < 0)
+		fail_test(__LINE__, "sigaction setup failed");
+	if (pipe(pipe_fd) < 0)
+		fail_test(__LINE__, "pipe for SIGPIPE test failed");
+	close(pipe_fd[0]);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdout < 0 || dup2(pipe_fd[1], STDOUT_FILENO) < 0)
+		fail_test(__LINE__, "stdout setup for SIGPIPE test failed");
+	close(pipe_fd[1]);
+	g_sigpipe_count = 0;
+	result = ft_printf("broken pipe");
+	if (dup2(saved_stdout, STDOUT_FILENO) < 0)
+		fail_test(__LINE__, "stdout restore after SIGPIPE failed");
+	close(saved_stdout);
+	if (sigaction(SIGPIPE, 0, &after) < 0)
+		fail_test(__LINE__, "sigaction readback failed");
+	if (sigaction(SIGPIPE, &before, 0) < 0)
+		fail_test(__LINE__, "sigaction restore failed");
+	if (result != -1 || g_sigpipe_count != 1)
+		fail_test(__LINE__, "SIGPIPE write failure was not reported");
+	if (after.sa_handler != count_sigpipe)
+		fail_test(__LINE__, "library changed the SIGPIPE policy");
+}
+
 int	main(void)
 {
 	run_core_cases();
@@ -212,6 +257,7 @@ int	main(void)
 	run_parser_boundary_cases();
 	run_numeric_layout_cases();
 	run_error_cases();
+	run_sigpipe_policy_case();
 	dprintf(STDERR_FILENO, "ft_printf tests passed\n");
 	return (0);
 }
