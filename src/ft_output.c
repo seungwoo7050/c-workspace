@@ -1,7 +1,15 @@
 #include "ft_printf_internal.h"
 
+#include <errno.h>
 #include <limits.h>
 #include <unistd.h>
+
+#ifdef FT_PRINTF_TEST_WRITE
+ssize_t	ft_printf_test_write(int fd, const void *buffer, size_t length);
+# define FT_PRINTF_SYSTEM_WRITE ft_printf_test_write
+#else
+# define FT_PRINTF_SYSTEM_WRITE write
+#endif
 
 void	ft_printf_init(t_printf *ctx, int fd)
 {
@@ -13,12 +21,18 @@ void	ft_printf_init(t_printf *ctx, int fd)
 int	ft_printf_write(t_printf *ctx, const char *buffer, size_t length)
 {
 	ssize_t	written;
+	size_t	request;
 
 	if (ctx->error)
 		return (-1);
 	while (length > 0)
 	{
-		written = write(ctx->fd, buffer, length);
+		request = length;
+		if (request > (size_t)SSIZE_MAX)
+			request = (size_t)SSIZE_MAX;
+		written = FT_PRINTF_SYSTEM_WRITE(ctx->fd, buffer, request);
+		if (written < 0 && errno == EINTR)
+			continue ;
 		if (written <= 0)
 		{
 			ctx->error = 1;
