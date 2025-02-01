@@ -57,11 +57,21 @@ int	ft_printf_putchar(t_printf *ctx, char c)
 
 int	ft_printf_putnchar(t_printf *ctx, char c, int length)
 {
+	char	buffer[64];
+	int		index;
+	int		chunk;
+
+	index = 0;
+	while (index < (int)sizeof(buffer))
+		buffer[index++] = c;
 	while (length > 0)
 	{
-		if (ft_printf_putchar(ctx, c) < 0)
+		chunk = length;
+		if (chunk > (int)sizeof(buffer))
+			chunk = (int)sizeof(buffer);
+		if (ft_printf_write(ctx, buffer, (size_t)chunk) < 0)
 			return (-1);
-		length--;
+		length -= chunk;
 	}
 	return (0);
 }
