@@ -187,6 +187,16 @@ static void	run_numeric_layout_cases(void)
 	EXPECT_PRINTF("hex-empty:'%#.0x'", 0u);
 }
 
+static void	run_text_differential_cases(void)
+{
+	char	bounded[3];
+
+	bounded[0] = 'a';
+	bounded[1] = 'b';
+	bounded[2] = 'c';
+	EXPECT_PRINTF("%.3s", bounded);
+}
+
 static void	run_error_cases(void)
 {
 	int	saved_stdout;
@@ -256,6 +266,7 @@ int	main(void)
 	run_bonus_cases();
 	run_parser_boundary_cases();
 	run_numeric_layout_cases();
+	run_text_differential_cases();
 	run_error_cases();
 	run_sigpipe_policy_case();
 	dprintf(STDERR_FILENO, "ft_printf tests passed\n");
