@@ -41,7 +41,8 @@ int	ft_printf_print_signed(t_printf *ctx, t_format *fmt, int number)
 
 	value = (long)number;
 	if (value < 0)
-		return (ft_write_decimal(ctx, fmt, "-", (unsigned long)(-value)));
+		return (ft_write_decimal(ctx, fmt, "-",
+				(unsigned long)(-(value + 1)) + 1));
 	prefix = "";
 	if (fmt->flags & FT_FLAG_PLUS)
 		prefix = "+";
