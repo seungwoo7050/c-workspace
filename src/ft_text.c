@@ -1,11 +1,12 @@
 #include "ft_printf_internal.h"
 
-static size_t	ft_local_strlen(const char *string)
+static size_t	ft_local_strlen(const char *string, t_format *fmt)
 {
 	size_t	length;
 
 	length = 0;
-	while (string[length])
+	while ((!fmt->has_precision || length < (size_t)fmt->precision)
+		&& string[length])
 		length++;
 	return (length);
 }
@@ -33,9 +34,7 @@ int	ft_printf_print_string(t_printf *ctx, t_format *fmt, const char *string)
 
 	if (string == 0)
 		string = "(null)";
-	length = ft_local_strlen(string);
-	if (fmt->has_precision && fmt->precision < (int)length)
-		length = (size_t)fmt->precision;
+	length = ft_local_strlen(string, fmt);
 	padding = fmt->width - (int)length;
 	if (!(fmt->flags & FT_FLAG_LEFT)
 		&& ft_printf_putnchar(ctx, ' ', padding) < 0)
