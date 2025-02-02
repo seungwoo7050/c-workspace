@@ -1,49 +1,51 @@
-NAME := libftprintf.a
+TARGET := libftprintf.a
 
-CC := cc
-CFLAGS := -Wall -Wextra -Werror
-CPPFLAGS := -Iinclude
-AR := ar
-ARFLAGS := rcs
-RM := rm -f
+CC         ?= cc
+CFLAGS     ?= -std=c99 -Wall -Wextra -Werror -Iinclude -MMD -MP
+AR         ?= ar
+ARFLAGS    ?= rcs
 
-SRC := src/ft_printf.c \
-	src/ft_output.c \
-	src/ft_parse.c \
-	src/ft_measure.c \
-	src/ft_dispatch.c \
-	src/ft_text.c \
-	src/ft_numeric_layout.c \
-	src/ft_number.c \
-	src/ft_hex.c
-OBJ := $(SRC:.c=.o)
-HEADER := include/ft_printf.h src/ft_printf_internal.h
-TEST_BIN := tests/bin/test_ft_printf
-FAULT_TEST_BIN := tests/bin/test_output_faults
+SRC        := $(wildcard src/*.c)
+BIN_DIR    := build
+OBJS       := $(patsubst %.c,$(BIN_DIR)/%.o,$(SRC))
+DEPS       := $(OBJS:.o=.d)
+TEST_SRC   := $(wildcard tests/test_ft_*.c)
+TEST_BIN   := $(BIN_DIR)/test/test_ft_printf
+FAULT_SRC  := $(wildcard tests/test_output_*.c)
+FAULT_BIN  := $(BIN_DIR)/test/test_output_faults
 
-all: $(NAME)
+.PHONY: all clean fclean re test
 
-$(NAME): $(OBJ)
-	$(AR) $(ARFLAGS) $@ $^
+all: $(BIN_DIR)/$(TARGET)
 
-%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BIN_DIR):
+	mkdir -p $@
 
-test: $(NAME)
-	mkdir -p tests/bin
-	$(CC) $(CFLAGS) $(CPPFLAGS) tests/test_ft_printf.c $(NAME) -o $(TEST_BIN)
-	./$(TEST_BIN)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -DFT_PRINTF_TEST_WRITE \
-		tests/test_output_faults.c $(SRC) -o $(FAULT_TEST_BIN)
-	./$(FAULT_TEST_BIN)
+$(BIN_DIR)/%.o: %.c include/ft_printf.h src/ft_printf_internal.h | $(BIN_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/$(TARGET): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $(OBJS)
+
+$(TEST_BIN): $(TEST_SRC) $(BIN_DIR)/$(TARGET) include/ft_printf.h | $(BIN_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(TEST_SRC) $(BIN_DIR)/$(TARGET) -o $@
+
+$(FAULT_BIN): $(FAULT_SRC) $(SRC) include/ft_printf.h | $(BIN_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -DFT_PRINTF_TEST_WRITE $(FAULT_SRC) $(SRC) -o $@
+
+test: $(TEST_BIN) $(FAULT_BIN)
+	@$(TEST_BIN)
+	@$(FAULT_BIN)
 
 clean:
-	$(RM) $(OBJ)
-	rm -rf tests/bin
+	rm -rf $(BIN_DIR)
 
 fclean: clean
-	$(RM) $(NAME) $(TEST_BIN) $(FAULT_TEST_BIN)
+	rm -f $(TARGET)
 
 re: fclean all
 
-.PHONY: all clean fclean re test
+-include $(DEPS)
