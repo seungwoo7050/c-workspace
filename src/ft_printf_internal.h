@@ -32,6 +32,7 @@ void		ft_printf_init(t_printf *ctx, int fd);
 int			ft_printf_write(t_printf *ctx, const char *buffer, size_t length);
 int			ft_printf_putchar(t_printf *ctx, char c);
 int			ft_printf_putnchar(t_printf *ctx, char c, int length);
+int			ft_printf_measure(const char *format, va_list *args);
 int			ft_printf_write_numeric_layout(t_printf *ctx, t_format *fmt,
 				const char *prefix, const char *digits, int digit_len,
 				int is_zero);

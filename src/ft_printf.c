@@ -3,13 +3,21 @@
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
+	va_list	measure_args;
 	t_printf	ctx;
 	t_format	fmt;
 
-	(void)args;
 	if (format == 0)
 		return (-1);
 	va_start(args, format);
+	va_copy(measure_args, args);
+	if (ft_printf_measure(format, &measure_args) < 0)
+	{
+		va_end(measure_args);
+		va_end(args);
+		return (-1);
+	}
+	va_end(measure_args);
 	ft_printf_init(&ctx, 1);
 	while (*format)
 	{

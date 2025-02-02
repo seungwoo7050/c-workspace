@@ -10,6 +10,7 @@ RM := rm -f
 SRC := src/ft_printf.c \
 	src/ft_output.c \
 	src/ft_parse.c \
+	src/ft_measure.c \
 	src/ft_dispatch.c \
 	src/ft_text.c \
 	src/ft_numeric_layout.c \
