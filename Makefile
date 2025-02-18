@@ -5,6 +5,7 @@ OBJ_DIR := .build
 
 COMMON_SRCS := \
 	src/stack.c \
+	src/operations.c \
 	src/utils.c
 COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 
