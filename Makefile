@@ -3,12 +3,14 @@ CFLAGS := -std=c99 -Wall -Wextra -Werror -Wpedantic
 CPPFLAGS := -Iinclude
 OBJ_DIR := .build
 
-MODEL_SRCS := src/stack.c
-MODEL_OBJS := $(MODEL_SRCS:src/%.c=$(OBJ_DIR)/%.o)
+COMMON_SRCS := \
+	src/stack.c \
+	src/utils.c
+COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 
 .PHONY: all clean fclean re
 
-all: $(MODEL_OBJS)
+all: $(COMMON_OBJS)
 
 $(OBJ_DIR)/%.o: src/%.c include/push_swap.h | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@

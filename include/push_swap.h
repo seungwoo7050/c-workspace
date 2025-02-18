@@ -3,6 +3,7 @@
 
 # include <stddef.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_stack
 {
@@ -17,5 +18,10 @@ int		stack_init(t_stack *stack, int capacity);
 void	stack_free(t_stack *stack);
 int		stack_is_sorted(const t_stack *stack);
 int		stack_is_complete_sorted(const t_stack *a, const t_stack *b);
+
+size_t	ps_strlen(const char *str);
+int		ps_strcmp(const char *a, const char *b);
+void	ps_putstr_fd(int fd, const char *str);
+void	write_error(void);
 
 #endif
