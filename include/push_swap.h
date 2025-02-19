@@ -20,10 +20,13 @@ int		stack_is_sorted(const t_stack *stack);
 int		stack_is_complete_sorted(const t_stack *a, const t_stack *b);
 
 void	stack_swap(t_stack *stack);
+void	stack_push(t_stack *dst, t_stack *src);
 
 void	op_sa(t_stack *a, int emit);
 void	op_sb(t_stack *b, int emit);
 void	op_ss(t_stack *a, t_stack *b, int emit);
+void	op_pa(t_stack *a, t_stack *b, int emit);
+void	op_pb(t_stack *a, t_stack *b, int emit);
 
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
