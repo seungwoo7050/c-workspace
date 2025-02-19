@@ -64,6 +64,23 @@ void	stack_rotate(t_stack *stack)
 	stack->ranks[stack->size - 1] = rank;
 }
 
+void	stack_reverse_rotate(t_stack *stack)
+{
+	int	value;
+	int	rank;
+
+	if (stack->size < 2)
+		return ;
+	value = stack->values[stack->size - 1];
+	rank = stack->ranks[stack->size - 1];
+	memmove(stack->values + 1, stack->values,
+		sizeof(int) * (size_t)(stack->size - 1));
+	memmove(stack->ranks + 1, stack->ranks,
+		sizeof(int) * (size_t)(stack->size - 1));
+	stack->values[0] = value;
+	stack->ranks[0] = rank;
+}
+
 void	op_sa(t_stack *a, int emit)
 {
 	stack_swap(a);
@@ -112,4 +129,23 @@ void	op_rr(t_stack *a, t_stack *b, int emit)
 	stack_rotate(a);
 	stack_rotate(b);
 	emit_op("rr\n", emit);
+}
+
+void	op_rra(t_stack *a, int emit)
+{
+	stack_reverse_rotate(a);
+	emit_op("rra\n", emit);
+}
+
+void	op_rrb(t_stack *b, int emit)
+{
+	stack_reverse_rotate(b);
+	emit_op("rrb\n", emit);
+}
+
+void	op_rrr(t_stack *a, t_stack *b, int emit)
+{
+	stack_reverse_rotate(a);
+	stack_reverse_rotate(b);
+	emit_op("rrr\n", emit);
 }
