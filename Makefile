@@ -4,6 +4,7 @@ CPPFLAGS := -Iinclude
 OBJ_DIR := .build
 
 COMMON_SRCS := \
+	src/parser.c \
 	src/stack.c \
 	src/operations.c \
 	src/utils.c

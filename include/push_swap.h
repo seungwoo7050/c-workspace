@@ -1,6 +1,7 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+# include <limits.h>
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -35,6 +36,8 @@ void	op_rr(t_stack *a, t_stack *b, int emit);
 void	op_rra(t_stack *a, int emit);
 void	op_rrb(t_stack *b, int emit);
 void	op_rrr(t_stack *a, t_stack *b, int emit);
+
+int		parse_input(int argc, char **argv, t_stack *a);
 
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
