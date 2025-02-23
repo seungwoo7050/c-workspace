@@ -9,11 +9,13 @@ COMMON_SRCS := \
 	src/operations.c \
 	src/utils.c
 COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
+PUSH_SRCS := src/sort.c
+PUSH_OBJS := $(PUSH_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 OPERATION_TEST := $(OBJ_DIR)/operation_invariants
 
 .PHONY: all clean fclean re test
 
-all: $(COMMON_OBJS)
+all: $(COMMON_OBJS) $(PUSH_OBJS)
 
 $(OBJ_DIR)/%.o: src/%.c include/push_swap.h | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@

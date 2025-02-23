@@ -38,6 +38,7 @@ void	op_rrb(t_stack *b, int emit);
 void	op_rrr(t_stack *a, t_stack *b, int emit);
 
 int		parse_input(int argc, char **argv, t_stack *a);
+void	sort_stack(t_stack *a, t_stack *b);
 
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
