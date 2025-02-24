@@ -87,10 +87,51 @@ static void	sort_tiny(t_stack *a, t_stack *b)
 		op_pa(a, b, 1);
 }
 
+static int	count_bits(int size)
+{
+	int	bits;
+	int	max_rank;
+
+	bits = 0;
+	max_rank = size - 1;
+	while ((max_rank >> bits) != 0)
+		bits++;
+	return (bits);
+}
+
+static void	radix_sort(t_stack *a, t_stack *b)
+{
+	int	bits;
+	int	bit;
+	int	i;
+	int	round_size;
+
+	bits = count_bits(a->size);
+	bit = 0;
+	while (bit < bits)
+	{
+		round_size = a->size;
+		i = 0;
+		while (i < round_size)
+		{
+			if (((a->ranks[0] >> bit) & 1) == 1)
+				op_ra(a, 1);
+			else
+				op_pb(a, b, 1);
+			i++;
+		}
+		while (b->size > 0)
+			op_pa(a, b, 1);
+		bit++;
+	}
+}
+
 void	sort_stack(t_stack *a, t_stack *b)
 {
 	if (a->size < 2 || stack_is_sorted(a))
 		return ;
 	if (a->size <= 5)
 		sort_tiny(a, b);
+	else
+		radix_sort(a, b);
 }
