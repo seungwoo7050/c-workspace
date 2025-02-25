@@ -1,0 +1,30 @@
+#include "push_swap.h"
+
+int	apply_checker_command(const char *line, t_stack *a, t_stack *b)
+{
+	if (ps_strcmp(line, "sa") == 0)
+		op_sa(a, 0);
+	else if (ps_strcmp(line, "sb") == 0)
+		op_sb(b, 0);
+	else if (ps_strcmp(line, "ss") == 0)
+		op_ss(a, b, 0);
+	else if (ps_strcmp(line, "pa") == 0)
+		op_pa(a, b, 0);
+	else if (ps_strcmp(line, "pb") == 0)
+		op_pb(a, b, 0);
+	else if (ps_strcmp(line, "ra") == 0)
+		op_ra(a, 0);
+	else if (ps_strcmp(line, "rb") == 0)
+		op_rb(b, 0);
+	else if (ps_strcmp(line, "rr") == 0)
+		op_rr(a, b, 0);
+	else if (ps_strcmp(line, "rra") == 0)
+		op_rra(a, 0);
+	else if (ps_strcmp(line, "rrb") == 0)
+		op_rrb(b, 0);
+	else if (ps_strcmp(line, "rrr") == 0)
+		op_rrr(a, b, 0);
+	else
+		return (0);
+	return (1);
+}

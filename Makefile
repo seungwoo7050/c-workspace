@@ -12,7 +12,7 @@ COMMON_SRCS := \
 COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 PUSH_SRCS := src/push_swap.c src/sort.c
 PUSH_OBJS := $(PUSH_SRCS:src/%.c=$(OBJ_DIR)/%.o)
-CHECKER_SRCS := src/checker_reader.c
+CHECKER_SRCS := src/checker.c src/checker_reader.c
 CHECKER_OBJS := $(CHECKER_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 OPERATION_TEST := $(OBJ_DIR)/operation_invariants
 
