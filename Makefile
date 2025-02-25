@@ -1,4 +1,5 @@
 NAME := push_swap
+CHECKER := checker
 CC := cc
 CFLAGS := -std=c99 -Wall -Wextra -Werror -Wpedantic
 CPPFLAGS := -Iinclude
@@ -18,10 +19,13 @@ OPERATION_TEST := $(OBJ_DIR)/operation_invariants
 
 .PHONY: all clean fclean re test
 
-all: $(COMMON_OBJS) $(PUSH_OBJS) $(CHECKER_OBJS) $(NAME)
+all: $(COMMON_OBJS) $(PUSH_OBJS) $(CHECKER_OBJS) $(NAME) $(CHECKER)
 
 $(NAME): $(COMMON_OBJS) $(PUSH_OBJS)
 	$(CC) $(CFLAGS) $(COMMON_OBJS) $(PUSH_OBJS) -o $@
+
+$(CHECKER): $(COMMON_OBJS) $(CHECKER_OBJS)
+	$(CC) $(CFLAGS) $(COMMON_OBJS) $(CHECKER_OBJS) -o $@
 
 $(OBJ_DIR)/%.o: src/%.c include/push_swap.h | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@

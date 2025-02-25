@@ -28,3 +28,51 @@ int	apply_checker_command(const char *line, t_stack *a, t_stack *b)
 		return (0);
 	return (1);
 }
+
+static int	read_and_apply(t_stack *a, t_stack *b)
+{
+	char	*line;
+	int		status;
+
+	status = read_next_line(0, &line);
+	while (status > 0)
+	{
+		if (!apply_checker_command(line, a, b))
+		{
+			free(line);
+			return (0);
+		}
+		free(line);
+		status = read_next_line(0, &line);
+	}
+	return (status == 0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_stack	a;
+	t_stack	b;
+
+	if (argc == 1)
+		return (0);
+	if (!parse_input(argc, argv, &a))
+		return (write_error(), 1);
+	if (!stack_init(&b, a.capacity))
+	{
+		stack_free(&a);
+		return (write_error(), 1);
+	}
+	if (!read_and_apply(&a, &b))
+	{
+		stack_free(&a);
+		stack_free(&b);
+		return (write_error(), 1);
+	}
+	if (stack_is_complete_sorted(&a, &b))
+		ps_putstr_fd(1, "OK\n");
+	else
+		ps_putstr_fd(1, "KO\n");
+	stack_free(&a);
+	stack_free(&b);
+	return (0);
+}
