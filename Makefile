@@ -12,11 +12,13 @@ COMMON_SRCS := \
 COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 PUSH_SRCS := src/push_swap.c src/sort.c
 PUSH_OBJS := $(PUSH_SRCS:src/%.c=$(OBJ_DIR)/%.o)
+CHECKER_SRCS := src/checker_reader.c
+CHECKER_OBJS := $(CHECKER_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 OPERATION_TEST := $(OBJ_DIR)/operation_invariants
 
 .PHONY: all clean fclean re test
 
-all: $(COMMON_OBJS) $(PUSH_OBJS) $(NAME)
+all: $(COMMON_OBJS) $(PUSH_OBJS) $(CHECKER_OBJS) $(NAME)
 
 $(NAME): $(COMMON_OBJS) $(PUSH_OBJS)
 	$(CC) $(CFLAGS) $(COMMON_OBJS) $(PUSH_OBJS) -o $@

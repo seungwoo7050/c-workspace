@@ -40,6 +40,8 @@ void	op_rrr(t_stack *a, t_stack *b, int emit);
 int		parse_input(int argc, char **argv, t_stack *a);
 void	sort_stack(t_stack *a, t_stack *b);
 
+int		read_next_line(int fd, char **line);
+
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
 void	ps_putstr_fd(int fd, const char *str);
