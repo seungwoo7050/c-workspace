@@ -46,3 +46,4 @@ re: fclean all
 
 test: all $(OPERATION_TEST)
 	$(OPERATION_TEST)
+	python3 tests/run_tests.py
