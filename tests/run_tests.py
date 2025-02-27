@@ -130,10 +130,45 @@ def test_checker_without_values_does_not_read_stdin():
         assert_equal(input_file.tell(), 0, "checker without values leaves stdin unread")
 
 
+def checker_ok(args, program, label):
+    result = run([CHECKER] + args, program)
+    assert_equal(result.returncode, 0, f"{label} checker exit")
+    assert_equal(result.stdout, "OK\n", f"{label} checker stdout")
+    assert_equal(result.stderr, "", f"{label} checker stderr")
+
+
+def test_checker_operations():
+    cases = [
+        ("sa", ["2", "1"], "sa\n"),
+        ("sb", ["2", "1", "3"], "pb\npb\nsb\npa\npa\n"),
+        ("ss", ["2", "1", "4", "3"], "pb\npb\nss\npa\npa\n"),
+        ("pa-pb", ["1", "2"], "pb\npa\n"),
+        ("ra", ["3", "1", "2"], "ra\n"),
+        ("rb", ["2", "1", "3"], "pb\npb\nrb\npa\npa\n"),
+        ("rr", ["2", "1", "4", "3"], "pb\npb\nrr\npa\npa\n"),
+        ("rra", ["2", "3", "1"], "rra\n"),
+        ("rrb", ["2", "1", "3"], "pb\npb\nrrb\npa\npa\n"),
+        ("rrr", ["2", "1", "4", "3"], "pb\npb\nrrr\npa\npa\n"),
+    ]
+    for label, args, program in cases:
+        checker_ok(args, program, label)
+
+    ko = run([CHECKER, "2", "1"], "")
+    assert_equal(ko.returncode, 0, "unsorted checker input exits cleanly")
+    assert_equal(ko.stdout, "KO\n", "unsorted checker input reports KO")
+    assert_equal(ko.stderr, "", "unsorted checker input has no stderr")
+
+    invalid = run([CHECKER, "1", "2"], "ra\nwat\n")
+    assert_ok(invalid.returncode != 0, "invalid checker command fails")
+    assert_equal(invalid.stdout, "", "invalid checker command has no stdout")
+    assert_equal(invalid.stderr, "Error\n", "invalid checker command reports Error")
+
+
 def main():
     test_parser_inputs()
     test_parser_boundaries()
     test_checker_without_values_does_not_read_stdin()
+    test_checker_operations()
     print("tests passed")
 
 
