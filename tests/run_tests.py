@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import itertools
+import random
 import subprocess
 import sys
 import tempfile
@@ -259,12 +260,28 @@ def test_sort_programs():
             assert_sorted_by_program(list(values))
 
 
+def test_move_counts():
+    random.seed(4242)
+    limits = [
+        (100, 1500),
+        (500, 8000),
+    ]
+    for size, limit in limits:
+        values = random.sample(range(-10000, 10000), size)
+        moves = assert_sorted_by_program(values)
+        assert_ok(
+            len(moves) <= limit,
+            f"{size} value move count {len(moves)} exceeds {limit}",
+        )
+
+
 def main():
     test_parser_inputs()
     test_parser_boundaries()
     test_checker_without_values_does_not_read_stdin()
     test_checker_operations()
     test_sort_programs()
+    test_move_counts()
     print("tests passed")
 
 
