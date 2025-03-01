@@ -39,10 +39,10 @@ static int	read_and_apply(t_stack *a, t_stack *b)
 	{
 		if (!apply_checker_command(line, a, b))
 		{
-			free(line);
+			ps_free(line);
 			return (0);
 		}
-		free(line);
+		ps_free(line);
 		status = read_next_line(0, &line);
 	}
 	return (status == 0);

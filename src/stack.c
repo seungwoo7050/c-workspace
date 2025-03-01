@@ -13,8 +13,8 @@ int	stack_init(t_stack *stack, int capacity)
 	stack_init_empty(stack);
 	if (capacity <= 0)
 		return (1);
-	stack->values = (int *)malloc(sizeof(int) * (size_t)capacity);
-	stack->ranks = (int *)malloc(sizeof(int) * (size_t)capacity);
+	stack->values = (int *)ps_malloc(sizeof(int) * (size_t)capacity);
+	stack->ranks = (int *)ps_malloc(sizeof(int) * (size_t)capacity);
 	if (stack->values == NULL || stack->ranks == NULL)
 	{
 		stack_free(stack);
@@ -26,8 +26,8 @@ int	stack_init(t_stack *stack, int capacity)
 
 void	stack_free(t_stack *stack)
 {
-	free(stack->values);
-	free(stack->ranks);
+	ps_free(stack->values);
+	ps_free(stack->ranks);
 	stack_init_empty(stack);
 }
 

@@ -11,6 +11,7 @@ COMMON_SRCS := \
 	src/parser.c \
 	src/stack.c \
 	src/operations.c \
+	src/runtime.c \
 	src/utils.c
 COMMON_OBJS := $(COMMON_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 PUSH_SRCS := src/push_swap.c src/sort.c
@@ -33,7 +34,9 @@ $(CHECKER): $(COMMON_OBJS) $(CHECKER_OBJS)
 $(OBJ_DIR)/%.o: src/%.c include/push_swap.h | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(OPERATION_TEST): tests/operation_invariants.c $(COMMON_OBJS)
+$(OPERATION_TEST): tests/operation_invariants.c \
+		$(OBJ_DIR)/stack.o $(OBJ_DIR)/operations.o $(OBJ_DIR)/runtime.o \
+		$(OBJ_DIR)/utils.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 $(OBJ_DIR):

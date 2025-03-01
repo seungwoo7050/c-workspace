@@ -13,7 +13,7 @@ static int	grow_line(char **line, size_t *capacity, size_t needed)
 		new_capacity = *capacity;
 	while (new_capacity <= needed)
 		new_capacity *= 2;
-	next = (char *)malloc(new_capacity);
+	next = (char *)ps_malloc(new_capacity);
 	if (next == NULL)
 		return (0);
 	i = 0;
@@ -22,7 +22,7 @@ static int	grow_line(char **line, size_t *capacity, size_t needed)
 		next[i] = (*line)[i];
 		i++;
 	}
-	free(*line);
+	ps_free(*line);
 	*line = next;
 	*capacity = new_capacity;
 	return (1);
@@ -40,21 +40,21 @@ int	read_next_line(int fd, char **line)
 	capacity = 0;
 	while (1)
 	{
-		bytes = read(fd, &c, 1);
+		bytes = ps_read(fd, &c, 1);
 		if (bytes < 0)
-			return (free(*line), -1);
+			return (ps_free(*line), -1);
 		if (bytes == 0)
 			break ;
 		if (c == '\n')
 			break ;
 		if (!grow_line(line, &capacity, len + 1))
-			return (free(*line), -1);
+			return (ps_free(*line), -1);
 		(*line)[len++] = c;
 	}
 	if (bytes == 0 && len == 0)
-		return (free(*line), 0);
+		return (ps_free(*line), 0);
 	if (!grow_line(line, &capacity, len + 1))
-		return (free(*line), -1);
+		return (ps_free(*line), -1);
 	(*line)[len] = '\0';
 	return (1);
 }

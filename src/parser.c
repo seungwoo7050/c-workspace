@@ -142,7 +142,7 @@ static int	assign_ranks(t_stack *a)
 	int	*sorted;
 	int	i;
 
-	sorted = (int *)malloc(sizeof(int) * (size_t)a->size);
+	sorted = (int *)ps_malloc(sizeof(int) * (size_t)a->size);
 	if (sorted == NULL)
 		return (0);
 	i = 0;
@@ -157,7 +157,7 @@ static int	assign_ranks(t_stack *a)
 	{
 		if (sorted[i - 1] == sorted[i])
 		{
-			free(sorted);
+			ps_free(sorted);
 			return (0);
 		}
 		i++;
@@ -168,7 +168,7 @@ static int	assign_ranks(t_stack *a)
 		a->ranks[i] = find_rank(sorted, a->size, a->values[i]);
 		i++;
 	}
-	free(sorted);
+	ps_free(sorted);
 	return (1);
 }
 
