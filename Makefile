@@ -3,6 +3,8 @@ CHECKER := checker
 CC := cc
 CFLAGS := -std=c99 -Wall -Wextra -Werror -Wpedantic
 CPPFLAGS := -Iinclude
+RM := rm -f
+RMDIR := rm -rf
 OBJ_DIR := .build
 
 COMMON_SRCS := \
@@ -17,6 +19,7 @@ CHECKER_SRCS := src/checker.c src/checker_reader.c
 CHECKER_OBJS := $(CHECKER_SRCS:src/%.c=$(OBJ_DIR)/%.o)
 OPERATION_TEST := $(OBJ_DIR)/operation_invariants
 
+.DELETE_ON_ERROR:
 .PHONY: all clean fclean re test
 
 all: $(COMMON_OBJS) $(PUSH_OBJS) $(CHECKER_OBJS) $(NAME) $(CHECKER)
@@ -37,10 +40,10 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	$(RMDIR) $(OBJ_DIR) tests/__pycache__ .pytest_cache
 
 fclean: clean
-	rm -f push_swap checker
+	$(RM) $(NAME) $(CHECKER)
 
 re: fclean all
 
