@@ -54,19 +54,19 @@ int	main(int argc, char **argv)
 	t_stack	b;
 
 	if (argc == 1)
-		return (0);
+		return (ps_test_finish(0));
 	if (!parse_input(argc, argv, &a))
-		return (write_error(), 1);
+		return (write_error(), ps_test_finish(1));
 	if (!stack_init(&b, a.capacity))
 	{
 		stack_free(&a);
-		return (write_error(), 1);
+		return (write_error(), ps_test_finish(1));
 	}
 	if (!read_and_apply(&a, &b))
 	{
 		stack_free(&a);
 		stack_free(&b);
-		return (write_error(), 1);
+		return (write_error(), ps_test_finish(1));
 	}
 	if (stack_is_complete_sorted(&a, &b))
 		ps_putstr_fd(1, "OK\n");
@@ -74,5 +74,5 @@ int	main(int argc, char **argv)
 		ps_putstr_fd(1, "KO\n");
 	stack_free(&a);
 	stack_free(&b);
-	return (0);
+	return (ps_test_finish(0));
 }

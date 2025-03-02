@@ -46,6 +46,7 @@ int		apply_checker_command(const char *line, t_stack *a, t_stack *b);
 void	*ps_malloc(size_t size);
 void	ps_free(void *pointer);
 ssize_t	ps_read(int fd, void *buffer, size_t count);
+int		ps_test_finish(int status);
 
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
