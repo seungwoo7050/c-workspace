@@ -71,7 +71,7 @@ def test_nth_allocation_failures():
     )
     assert_equal(success.returncode, 0, "push_swap past-last malloc succeeds")
 
-    for index in range(1, 7):
+    for index in range(1, 8):
         result = run(
             CHECKER,
             ["2", "1"],
@@ -84,7 +84,7 @@ def test_nth_allocation_failures():
         CHECKER,
         ["2", "1"],
         b"sa\n",
-        faults={"PS_FAIL_MALLOC_AT": 7},
+        faults={"PS_FAIL_MALLOC_AT": 8},
     )
     assert_equal(success.returncode, 0, "checker past-last malloc succeeds")
     assert_equal(success.stdout, b"OK\n", "checker succeeds after allocation sweep")

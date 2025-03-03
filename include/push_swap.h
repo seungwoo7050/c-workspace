@@ -6,6 +6,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# define PS_COMMAND_MAX 3
+
 typedef struct s_stack
 {
 	int	*values;
