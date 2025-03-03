@@ -90,8 +90,48 @@ def test_nth_allocation_failures():
     assert_equal(success.stdout, b"OK\n", "checker succeeds after allocation sweep")
 
 
+def test_read_failures_and_command_bounds():
+    for index in range(1, 5):
+        result = run(
+            CHECKER,
+            ["2", "1"],
+            b"sa\n",
+            faults={"PS_FAIL_READ_AT": index},
+        )
+        assert_true(result.returncode != 0, f"checker read #{index} fails")
+        assert_equal(result.stderr, b"Error\n", "checker read error")
+    for index in (1, 4):
+        result = run(
+            CHECKER,
+            ["2", "1"],
+            b"sa\n",
+            faults={"PS_EINTR_READ_AT": index},
+        )
+        assert_equal(result.returncode, 0, f"checker retries read EINTR #{index}")
+        assert_equal(result.stdout, b"OK\n", "checker result after read EINTR")
+
+    invalid_streams = [
+        b"sa\x00pb\n",
+        b"rrrr\n",
+        b"rrrr",
+        b"\x00\n",
+        b"\n",
+        b"r" * 65536 + b"\n",
+    ]
+    for stream in invalid_streams:
+        result = run(CHECKER, ["2", "1"], stream)
+        assert_true(result.returncode != 0, f"checker rejects {stream!r}")
+        assert_equal(result.stdout, b"", "invalid command has no stdout")
+        assert_equal(result.stderr, b"Error\n", "invalid command reports Error")
+
+    unterminated = run(CHECKER, ["2", "1"], b"sa")
+    assert_equal(unterminated.returncode, 0, "unterminated valid command succeeds")
+    assert_equal(unterminated.stdout, b"OK\n", "unterminated command is applied")
+
+
 def main():
     test_nth_allocation_failures()
+    test_read_failures_and_command_bounds()
     print("fault injection tests passed")
 
 

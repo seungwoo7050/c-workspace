@@ -16,6 +16,7 @@ typedef union u_allocation_header
 }	t_allocation_header;
 
 static unsigned long	g_malloc_calls;
+static unsigned long	g_read_calls;
 static unsigned long	g_live_allocations;
 
 static unsigned long	read_index(const char *name)
@@ -89,6 +90,13 @@ void	ps_free(void *pointer)
 
 ssize_t	ps_read(int fd, void *buffer, size_t count)
 {
+#ifdef PS_FAULT_INJECTION
+	g_read_calls++;
+	if (at_index("PS_EINTR_READ_AT", g_read_calls))
+		return (errno = EINTR, -1);
+	if (at_index("PS_FAIL_READ_AT", g_read_calls))
+		return (errno = EIO, -1);
+#endif
 	return (read(fd, buffer, count));
 }
 
