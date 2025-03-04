@@ -6,8 +6,8 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUSH_SWAP = ROOT / os.environ.get("PS_PUSH_SWAP", ".build/fault/push_swap")
-CHECKER = ROOT / os.environ.get("PS_CHECKER", ".build/fault/checker")
+PUSH_SWAP = ROOT / os.environ.get("PS_PUSH_SWAP", "build/fault/push_swap")
+CHECKER = ROOT / os.environ.get("PS_CHECKER", "build/fault/checker")
 ALLOCATION_REPORT = b"PS_LIVE_ALLOCATIONS=0\n"
 
 

@@ -8,8 +8,8 @@ import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUSH_SWAP = ROOT / "push_swap"
-CHECKER = ROOT / "checker"
+PUSH_SWAP = ROOT / "build" / "bin" / "push_swap"
+CHECKER = ROOT / "build" / "bin" / "checker"
 VALID_MOVES = {"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr", "rra", "rrb", "rrr"}
 CHILD_TIMEOUT_SECONDS = 5
 
