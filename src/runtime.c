@@ -1,6 +1,7 @@
 #include "push_swap.h"
 
 #include <errno.h>
+#include <signal.h>
 
 #ifdef PS_FAULT_INJECTION
 
@@ -98,6 +99,35 @@ ssize_t	ps_read(int fd, void *buffer, size_t count)
 		return (errno = EIO, -1);
 #endif
 	return (read(fd, buffer, count));
+}
+
+static ssize_t	ps_write_once(int fd, const void *buffer, size_t count)
+{
+	return (write(fd, buffer, count));
+}
+
+int	ps_write_all(int fd, const void *buffer, size_t count)
+{
+	const unsigned char	*cursor;
+	ssize_t				written;
+
+	cursor = (const unsigned char *)buffer;
+	while (count > 0)
+	{
+		written = ps_write_once(fd, cursor, count);
+		if (written < 0 && errno == EINTR)
+			continue ;
+		if (written <= 0)
+			return (0);
+		cursor += (size_t)written;
+		count -= (size_t)written;
+	}
+	return (1);
+}
+
+int	ps_ignore_sigpipe(void)
+{
+	return (signal(SIGPIPE, SIG_IGN) != SIG_ERR);
 }
 
 #ifdef PS_FAULT_INJECTION

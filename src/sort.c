@@ -14,77 +14,90 @@ static int	find_rank_index(const t_stack *stack, int rank)
 	return (-1);
 }
 
-static void	move_index_to_top(t_stack *a, int index)
+static int	move_index_to_top(t_stack *a, int index)
 {
 	if (index <= a->size / 2)
 	{
 		while (index-- > 0)
-			op_ra(a, 1);
+		{
+			if (!op_ra(a, 1))
+				return (0);
+		}
 	}
 	else
 	{
 		index = a->size - index;
 		while (index-- > 0)
-			op_rra(a, 1);
+		{
+			if (!op_rra(a, 1))
+				return (0);
+		}
 	}
+	return (1);
 }
 
-static void	sort_two(t_stack *a)
+static int	sort_two(t_stack *a)
 {
 	if (a->ranks[0] > a->ranks[1])
-		op_sa(a, 1);
+		return (op_sa(a, 1));
+	return (1);
 }
 
-static void	sort_three(t_stack *a)
+static int	sort_three(t_stack *a)
 {
 	int	first;
 	int	second;
 	int	third;
 
 	if (stack_is_sorted(a))
-		return ;
+		return (1);
 	first = a->ranks[0];
 	second = a->ranks[1];
 	third = a->ranks[2];
 	if (first > second && second < third && first < third)
-		op_sa(a, 1);
+		return (op_sa(a, 1));
 	else if (first > second && second > third)
 	{
-		op_sa(a, 1);
-		op_rra(a, 1);
+		if (!op_sa(a, 1))
+			return (0);
+		return (op_rra(a, 1));
 	}
 	else if (first > second && second < third && first > third)
-		op_ra(a, 1);
+		return (op_ra(a, 1));
 	else if (first < second && second > third && first < third)
 	{
-		op_sa(a, 1);
-		op_ra(a, 1);
+		if (!op_sa(a, 1))
+			return (0);
+		return (op_ra(a, 1));
 	}
 	else if (first < second && second > third && first > third)
-		op_rra(a, 1);
+		return (op_rra(a, 1));
+	return (1);
 }
 
-static void	sort_tiny(t_stack *a, t_stack *b)
+static int	sort_tiny(t_stack *a, t_stack *b)
 {
 	int	target_rank;
 	int	index;
 
 	if (a->size == 2)
-	{
-		sort_two(a);
-		return ;
-	}
+		return (sort_two(a));
 	target_rank = 0;
 	while (a->size > 3)
 	{
 		index = find_rank_index(a, target_rank);
-		move_index_to_top(a, index);
-		op_pb(a, b, 1);
+		if (!move_index_to_top(a, index) || !op_pb(a, b, 1))
+			return (0);
 		target_rank++;
 	}
-	sort_three(a);
+	if (!sort_three(a))
+		return (0);
 	while (b->size > 0)
-		op_pa(a, b, 1);
+	{
+		if (!op_pa(a, b, 1))
+			return (0);
+	}
+	return (1);
 }
 
 static int	count_bits(int size)
@@ -99,7 +112,7 @@ static int	count_bits(int size)
 	return (bits);
 }
 
-static void	radix_sort(t_stack *a, t_stack *b)
+static int	radix_sort(t_stack *a, t_stack *b)
 {
 	int	bits;
 	int	bit;
@@ -115,23 +128,29 @@ static void	radix_sort(t_stack *a, t_stack *b)
 		while (i < round_size)
 		{
 			if (((a->ranks[0] >> bit) & 1) == 1)
-				op_ra(a, 1);
-			else
-				op_pb(a, b, 1);
+			{
+				if (!op_ra(a, 1))
+					return (0);
+			}
+			else if (!op_pb(a, b, 1))
+				return (0);
 			i++;
 		}
 		while (b->size > 0)
-			op_pa(a, b, 1);
+		{
+			if (!op_pa(a, b, 1))
+				return (0);
+		}
 		bit++;
 	}
+	return (1);
 }
 
-void	sort_stack(t_stack *a, t_stack *b)
+int	sort_stack(t_stack *a, t_stack *b)
 {
 	if (a->size < 2 || stack_is_sorted(a))
-		return ;
+		return (1);
 	if (a->size <= 5)
-		sort_tiny(a, b);
-	else
-		radix_sort(a, b);
+		return (sort_tiny(a, b));
+	return (radix_sort(a, b));
 }

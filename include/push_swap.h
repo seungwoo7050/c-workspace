@@ -27,20 +27,20 @@ void	stack_push(t_stack *dst, t_stack *src);
 void	stack_rotate(t_stack *stack);
 void	stack_reverse_rotate(t_stack *stack);
 
-void	op_sa(t_stack *a, int emit);
-void	op_sb(t_stack *b, int emit);
-void	op_ss(t_stack *a, t_stack *b, int emit);
-void	op_pa(t_stack *a, t_stack *b, int emit);
-void	op_pb(t_stack *a, t_stack *b, int emit);
-void	op_ra(t_stack *a, int emit);
-void	op_rb(t_stack *b, int emit);
-void	op_rr(t_stack *a, t_stack *b, int emit);
-void	op_rra(t_stack *a, int emit);
-void	op_rrb(t_stack *b, int emit);
-void	op_rrr(t_stack *a, t_stack *b, int emit);
+int		op_sa(t_stack *a, int emit);
+int		op_sb(t_stack *b, int emit);
+int		op_ss(t_stack *a, t_stack *b, int emit);
+int		op_pa(t_stack *a, t_stack *b, int emit);
+int		op_pb(t_stack *a, t_stack *b, int emit);
+int		op_ra(t_stack *a, int emit);
+int		op_rb(t_stack *b, int emit);
+int		op_rr(t_stack *a, t_stack *b, int emit);
+int		op_rra(t_stack *a, int emit);
+int		op_rrb(t_stack *b, int emit);
+int		op_rrr(t_stack *a, t_stack *b, int emit);
 
 int		parse_input(int argc, char **argv, t_stack *a);
-void	sort_stack(t_stack *a, t_stack *b);
+int		sort_stack(t_stack *a, t_stack *b);
 
 int		read_next_line(int fd, char **line);
 int		apply_checker_command(const char *line, t_stack *a, t_stack *b);
@@ -48,11 +48,13 @@ int		apply_checker_command(const char *line, t_stack *a, t_stack *b);
 void	*ps_malloc(size_t size);
 void	ps_free(void *pointer);
 ssize_t	ps_read(int fd, void *buffer, size_t count);
+int		ps_write_all(int fd, const void *buffer, size_t count);
+int		ps_ignore_sigpipe(void);
 int		ps_test_finish(int status);
 
 size_t	ps_strlen(const char *str);
 int		ps_strcmp(const char *a, const char *b);
-void	ps_putstr_fd(int fd, const char *str);
-void	write_error(void);
+int		ps_putstr_fd(int fd, const char *str);
+int		write_error(void);
 
 #endif

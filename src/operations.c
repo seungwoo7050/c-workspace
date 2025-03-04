@@ -2,10 +2,11 @@
 
 #include <string.h>
 
-static void	emit_op(const char *name, int emit)
+static int	emit_op(const char *name, int emit)
 {
 	if (emit)
-		ps_putstr_fd(1, name);
+		return (ps_putstr_fd(1, name));
+	return (1);
 }
 
 void	stack_swap(t_stack *stack)
@@ -81,71 +82,71 @@ void	stack_reverse_rotate(t_stack *stack)
 	stack->ranks[0] = rank;
 }
 
-void	op_sa(t_stack *a, int emit)
+int	op_sa(t_stack *a, int emit)
 {
 	stack_swap(a);
-	emit_op("sa\n", emit);
+	return (emit_op("sa\n", emit));
 }
 
-void	op_sb(t_stack *b, int emit)
+int	op_sb(t_stack *b, int emit)
 {
 	stack_swap(b);
-	emit_op("sb\n", emit);
+	return (emit_op("sb\n", emit));
 }
 
-void	op_ss(t_stack *a, t_stack *b, int emit)
+int	op_ss(t_stack *a, t_stack *b, int emit)
 {
 	stack_swap(a);
 	stack_swap(b);
-	emit_op("ss\n", emit);
+	return (emit_op("ss\n", emit));
 }
 
-void	op_pa(t_stack *a, t_stack *b, int emit)
+int	op_pa(t_stack *a, t_stack *b, int emit)
 {
 	stack_push(a, b);
-	emit_op("pa\n", emit);
+	return (emit_op("pa\n", emit));
 }
 
-void	op_pb(t_stack *a, t_stack *b, int emit)
+int	op_pb(t_stack *a, t_stack *b, int emit)
 {
 	stack_push(b, a);
-	emit_op("pb\n", emit);
+	return (emit_op("pb\n", emit));
 }
 
-void	op_ra(t_stack *a, int emit)
+int	op_ra(t_stack *a, int emit)
 {
 	stack_rotate(a);
-	emit_op("ra\n", emit);
+	return (emit_op("ra\n", emit));
 }
 
-void	op_rb(t_stack *b, int emit)
+int	op_rb(t_stack *b, int emit)
 {
 	stack_rotate(b);
-	emit_op("rb\n", emit);
+	return (emit_op("rb\n", emit));
 }
 
-void	op_rr(t_stack *a, t_stack *b, int emit)
+int	op_rr(t_stack *a, t_stack *b, int emit)
 {
 	stack_rotate(a);
 	stack_rotate(b);
-	emit_op("rr\n", emit);
+	return (emit_op("rr\n", emit));
 }
 
-void	op_rra(t_stack *a, int emit)
+int	op_rra(t_stack *a, int emit)
 {
 	stack_reverse_rotate(a);
-	emit_op("rra\n", emit);
+	return (emit_op("rra\n", emit));
 }
 
-void	op_rrb(t_stack *b, int emit)
+int	op_rrb(t_stack *b, int emit)
 {
 	stack_reverse_rotate(b);
-	emit_op("rrb\n", emit);
+	return (emit_op("rrb\n", emit));
 }
 
-void	op_rrr(t_stack *a, t_stack *b, int emit)
+int	op_rrr(t_stack *a, t_stack *b, int emit)
 {
 	stack_reverse_rotate(a);
 	stack_reverse_rotate(b);
-	emit_op("rrr\n", emit);
+	return (emit_op("rrr\n", emit));
 }
