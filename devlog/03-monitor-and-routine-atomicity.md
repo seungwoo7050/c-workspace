@@ -1,6 +1,6 @@
 # Dev Log 03. Making the terminal decision atomic, and excluding an interrupted meal
 
-## 19. `fix(monitor): 종료 상태와 사망 로그를 원자적으로 확정` / `test(monitor): 완료 상태와 오래된 사망 판정 검증`
+## 1. `fix(monitor): 종료 상태와 사망 로그를 원자적으로 확정` / `test(monitor): 완료 상태와 오래된 사망 판정 검증`
 
 ### 1. `philo_log_death()`를 `philo_try_log_death()`로 바꾼다
 
@@ -112,7 +112,7 @@ int	test_mutex_unlock(pthread_mutex_t *mutex)
 
 `ended`가 락을 쥔 채로 세워졌는지 확인했고, 오래된 사망 판정 케이스에서는 `philo_try_log_death`의 재확인 로직이 실제로 작동해 `died` 로그가 찍히지 않고 `full_count`가 세워진 완료 경로로 대신 확정되는지 확인했다(`grep -q 'died' ... && fail 'stale death was printed'`).
 
-## 20. `fix(routine): 중단된 식사를 완료 횟수에서 제외` / `test(routine): 중단된 식사의 카운터 불변식 검증`
+## 2. `fix(routine): 중단된 식사를 완료 횟수에서 제외` / `test(routine): 중단된 식사의 카운터 불변식 검증`
 
 ### 1. `philo_sleep_ms`와 `record_meal_done`이 실패를 반환하게 한다
 
@@ -159,3 +159,9 @@ int	test_philo_sleep_ms(t_table *table, int64_t duration_ms)
 `-Dphilo_sleep_ms=test_philo_sleep_ms`로 실제 대기 로직 전체를 건너뛰고, 그 자리에서 곧바로 `table->ended = 1`을 세우면서 `PHILO_ERR`을 반환하게 만들었다. "먹는 도중 시뮬레이션이 끝났다"는 상황을 실제로 몇백 ms를 기다리지 않고도 즉시, 결정적으로 재현하는 방법이다.
 
 `philo_routine()`을 이 상태로 한 번 호출한 뒤 `table.philos[0].meals`와 `table.full_count`가 둘 다 0으로 남아있는지 확인했다. 중단된 식사가 완료 횟수에 전혀 반영되지 않았음을 뜻한다.
+
+## 정리
+
+락 밖에서 찾은 결과는 후보일 뿐이고, 확정은 락 안에서 조건을 다시 검사한 뒤에만 한다. 종료 판정과 종료 플래그 설정도 같은 임계구역에서 처리해야 그 사이에 다른 스레드가 끼어들지 못한다. 중단된 작업을 완료로 세지 않으려면 대기 함수가 중단을 반환값으로 알려야 하고, 테스트는 락 해제나 대기 함수를 가로채 그 틈을 결정적으로 재현한다.
+
+웹에서는 `SELECT`로 확인하고 별도 `UPDATE`로 확정하는 check-then-act가 같은 경쟁 상태를 만든다. 조건부 `UPDATE`와 낙관적 락으로 옮긴 코드는 `appendix/lv2-core/check-then-recheck-under-lock-race-window.md`에, 감시 루프의 폴링 간격 트레이드오프는 `appendix/lv2-core/polling-interval-latency-vs-cpu-tradeoff.md`에 있다.

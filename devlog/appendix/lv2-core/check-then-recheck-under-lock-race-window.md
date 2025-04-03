@@ -29,7 +29,7 @@ if (!table->ended && now - philo->last_meal_ms >= table->config.time_to_die)
 **모범사례**:  
 굳이 락을 풀었다 다시 잡는 2단계 구조를 쓴 이유는 성능이다. `find_dead_philo()`는 모든 철학자를 순회하며 여러 비교 연산을 하는데, 이걸 락을 쥔 채로 하면 그동안 다른 철학자 스레드들이 `last_meal_ms`를 갱신하지 못해 락 경합이 커진다. 그래서 "넓은 탐색은 락 밖에서 느슨하게, 좁은 확정은 락 안에서 한 번만 원자적으로"라는 절충을 택했다. `find_dead_philo`가 찾은 결과는 확정이 아니라 재확인이 필요한 "후보"일 뿐이라는 걸 타입이 아니라 함수 이름(`try_log_death`의 `try`)과 반환값으로 표현한다. 더 엄격한 시스템이라면 이런 이름 규약 대신 "확정되지 않은 후보"를 나타내는 별도 타입으로 감싸 컴파일 타임에 실수를 막기도 한다.
 
-## 실제로 이 재확인이 없으면 벌어지는 시나리오
+재확인이 없으면 다음 순서로 거짓 사망 판정이 나온다.
 
 1. `find_dead_philo`가 철학자 3을 "죽은 것 같다"고 찾아낸다(`now - last_meal_ms >= time_to_die`가 참이었을 때).
 2. `state_mutex`가 풀린다.
@@ -38,7 +38,7 @@ if (!table->ended && now - philo->last_meal_ms >= table->config.time_to_die)
 
 `philo_try_log_death` 내부의 `now - philo->last_meal_ms >= table->config.time_to_die`가 락을 쥔 채 다시 계산되기 때문에, 3번에서 갱신된 `last_meal_ms`가 이 재확인에 그대로 반영되어 거짓 사망 판정을 막는다. `tests/terminal_state.c`의 `MODE_STALE_DEATH` 케이스가 정확히 이 시나리오를 인위적으로 재현해서 검증한다.
 
-## 실무에서 더 흔히 보는 대안: DB의 조건부 UPDATE, 낙관적 락
+## 웹에서는 어디에 나타나는가
 
 같은 TOCTOU 원리가 DB 트랜잭션에서도 그대로 나타난다. `SELECT`로 재고를 확인(check)한 뒤 별도의 `UPDATE`로 차감(act)하면, 그 사이에 다른 트랜잭션이 끼어들어 재고를 먼저 차감해버릴 수 있다.
 

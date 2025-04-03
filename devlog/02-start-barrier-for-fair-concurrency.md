@@ -1,6 +1,6 @@
 # Dev Log 02. A condition-variable barrier for a fair simultaneous start
 
-## 18. `fix(thread): 시작 장벽으로 기준 시각 통일` / `test(thread): 지연된 작업자의 공통 시작 시각 검증` / `test(thread): 시작 대기 실패 전파 검증`
+## 1. `fix(thread): 시작 장벽으로 기준 시각 통일` / `test(thread): 지연된 작업자의 공통 시작 시각 검증` / `test(thread): 시작 대기 실패 전파 검증`
 
 첫 커밋이 조건변수 기반 시작 장벽(barrier)을 도입하고, 이어지는 두 테스트가 정확히 그 장벽의 정상 동작과 실패 전파 경로를 검증한다.
 
@@ -129,3 +129,9 @@ int	test_pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
 ```
 
 `wait_for_start()` 안의 첫 `pthread_cond_wait` 호출 한 번만 실패시켜서, `run_error`가 세워지고 `philo_run()`이 `PHILO_ERR`을 반환하는지 확인한다.
+
+## 정리
+
+동시에 시작해야 하는 작업은 전원이 준비됐다는 사실을 한곳에서 확인한 뒤 하나의 기준값을 나눠주고 한 번에 풀어줘야 공정하다. 배리어는 정상 경로만으로는 완성되지 않는다. 일부가 도착하지 못했을 때 대기자를 풀어주는 출구가 없으면 실패 상황에서 그대로 교착이 된다.
+
+웹에서는 여러 비동기 작업을 모아 한 시점에 출발시키는 조율이 같은 구조다. Promise 기반 배리어와 실패 출구는 `appendix/lv2-core/condvar-barrier-pattern-for-fair-concurrent-start.md`에, 조건변수 자체의 사용법은 `appendix/lv1/pthread-condition-variable-basics.md`에 있다.
