@@ -1,6 +1,6 @@
 # Dev Log 02. Getting unsafe work out of the signal handler
 
-## `refactor(server): signal 처리를 self-pipe event loop로 제한`
+## 1. `refactor(server): signal 처리를 self-pipe event loop로 제한`
 
 ```c
 typedef struct s_bit_event { pid_t sender; int signal; } t_bit_event;

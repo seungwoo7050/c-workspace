@@ -1,6 +1,6 @@
 # Dev Log 01. Sending a string through nothing but signals
 
-## `feat(client): 메시지 바이트를 시그널로 전송`
+## 1. `feat(client): 메시지 바이트를 시그널로 전송`
 
 ```c
 // pid_t: 프로세스 ID를 담는 전용 정수 타입
@@ -34,7 +34,7 @@ static int send_byte(pid_t server_pid, unsigned char byte)
 
 UNIX 시그널은 "이 시그널이 왔다"는 것 말고는 아무 데이터도 실어 나르지 못한다. `SIGUSR1`/`SIGUSR2` 두 종류뿐이라, 한 번에 표현할 수 있는 정보는 1비트다. 그래서 문자열을 보내려면 각 바이트를 8개의 시그널(비트 하나당 시그널 하나)로 쪼개 순서대로 보내야 한다. `usleep(150)`은 이 초기 버전이 "서버가 이전 시그널을 처리하기 전에 다음 시그널이 도착해 유실되는" 문제를 고정된 지연으로 회피하는 방식이다. 이 방식의 한계(느리고, 그래도 유실 가능성이 있음)는 이후 `feat(protocol): 비트 처리마다 ACK 전송`에서 "고정 지연" 대신 "서버의 확인 응답(ACK)을 받고서야 다음 비트를 보낸다"는 방식으로 대체된다.
 
-## `feat(server): 시그널 비트를 바이트로 조립`
+## 2. `feat(server): 시그널 비트를 바이트로 조립`
 
 ```c
 // minitalk.h
