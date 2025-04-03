@@ -1,6 +1,6 @@
-# Dev Log 01. two classic 42 grading traps
+# Dev Log 01. Two classic 42 grading traps
 
-## `fix(decimal): INT_MIN 크기를 unsigned 범위에서 계산`
+## 1. `fix(decimal): INT_MIN 크기를 unsigned 범위에서 계산`
 
 ```c
 // 이전
@@ -22,7 +22,7 @@ if (value < 0)
 
 수정된 코드는 `-value`를 직접 구하는 대신 `(-(value + 1)) + 1`로 우회한다. `value + 1`은 `INT_MIN`보다 1 크므로 안전하게 표현 가능하고, 그 값을 음수화한 뒤 마지막에 1을 더해 원하는 절댓값을 얻는다. 이 계산 전체가 "표현 범위의 경계값 하나를 건드리지 않고" 같은 결과에 도달하는 우회로다.
 
-## `fix(output): 중단된 쓰기 재시도와 요청 크기 제한`
+## 2. `fix(output): 중단된 쓰기 재시도와 요청 크기 제한`
 
 ```c
 while (length > 0) {
