@@ -1,6 +1,8 @@
 # Dev Log 02. Two ways this reader avoids doing the same work twice
 
-## 커서를 저장해서 매번 처음부터 다시 훑지 않는다
+## 1. `feat(reader): 줄을 분리하고 남은 입력 보존`
+
+### 커서를 저장해서 매번 처음부터 다시 훑지 않는다
 
 ```c
 static size_t find_line_end(t_reader *reader) {
@@ -17,7 +19,9 @@ static size_t find_line_end(t_reader *reader) {
 
 개행 문자를 찾는 탐색이 `begin`(아직 반환 안 한 데이터의 시작)이 아니라 `scan`(지난번까지 이미 검사해서 개행이 없다고 확인된 지점)부터 시작한다. 개행이 아직 안 나온 상태에서 여러 번 `read()`를 반복해 버퍼를 계속 키워야 하는 긴 줄의 경우, `scan`이 없으면 매 `read()` 이후 버퍼 전체를 처음부터 다시 훑어야 해서 총 비교 횟수가 버퍼 길이에 대해 제곱으로 늘어난다($O(n^2)$). `scan`을 유지하면 각 바이트는 정확히 한 번만 검사되어 전체가 $O(n)$으로 줄어든다.
 
-## 임시 버퍼에 복사했다가 다시 옮기는 대신, 목적지에 바로 읽는다
+## 2. `refactor(buffer): 남은 입력 버퍼를 읽기 공간으로 재사용`
+
+### 임시 버퍼에 복사했다가 다시 옮기는 대신, 목적지에 바로 읽는다
 
 ```c
 // 이전: 스택 버퍼로 read() → 그 결과를 다시 힙 버퍼로 memcpy(append_bytes)

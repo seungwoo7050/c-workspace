@@ -1,6 +1,6 @@
-# Dev Log 01. remembering what was already read
+# Dev Log 01. Remembering what was already read
 
-## `feat(reader): 파일 끝의 마지막 줄 반환`
+## 1. `feat(reader): 파일 끝의 마지막 줄 반환`
 
 ```c
 // typedef struct name { ... } alias; 형태로 구조체 정의와 동시에 그 구조체를 가리킬 별칭(t_reader)을 만든다
@@ -25,7 +25,7 @@ char *get_next_line(int fd)
 
 `get_next_line`이 다른 함수와 근본적으로 다른 점은 "한 번의 호출로 한 줄을 반환해야 하는데, 파일에서 한 번 `read()`한 만큼이 딱 한 줄과 일치할 보장이 전혀 없다"는 것이다. `read()`는 개행 문자를 기준으로 끊어주지 않고 그냥 다음 `BUFFER_SIZE`바이트를 돌려줄 뿐이다. 그래서 이 함수는 호출이 끝나도 사라지지 않는 상태(`static t_reader g_reader`)를 갖고, 매 호출마다 "지금까지 읽었지만 아직 반환하지 않은 나머지"를 그 상태에 누적해둔다. 함수가 무상태(stateless)일 수 없다는 게 이 과제의 핵심 전제다.
 
-## `feat(state): 디스크립터별 읽기 상태 분리`
+## 2. `feat(state): 디스크립터별 읽기 상태 분리`
 
 ```c
 // 이전: 전역 변수 하나 → 파일 디스크립터 하나만 추적
