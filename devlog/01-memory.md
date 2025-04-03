@@ -2,7 +2,9 @@
 
 과제에서 구현한 메모리 함수군(`ft_memset`/`ft_memcpy`/`ft_memmove`/`ft_memchr`/`ft_memcmp`) 대부분은 "1바이트씩 순회"라는 같은 패턴의 반복이다. 이 문서는 그 반복을 전부 훑는 대신, 프로그래밍 진입 단계에서 실제로 걸려 넘어지기 쉬운 지점만 짚는다.
 
-## `ft_memmove`: 왜 `ft_memcpy` 하나로는 안 되는가
+## 1. `feat(memory): 겹치는 메모리의 안전한 이동 구현`
+
+### `ft_memmove`: 왜 `ft_memcpy` 하나로는 안 되는가
 
 ```c
 // src/memory/ft_memory_move.c
@@ -33,7 +35,9 @@ void *ft_memmove(void *destination, const void *source, size_t length) {
 
 이 구현의 겹침 탐지는 `offset`을 1부터 `length`까지 순회하며 매번 포인터를 비교하는 방식이라 $O(n)$이다. 실제 libc 구현들은 보통 `destination > source`라는 포인터 비교 하나로 O(1)에 같은 판단을 내린다. 더 단순하면서도 정석적인 방법을 알 지 못한 나의 실수였다.
 
-## `ft_memcmp`: 뺄셈으로 비교 결과를 표현할 때의 함정
+## 2. `feat(memory): 범위를 제한한 메모리 검색과 비교 추가`
+
+### `ft_memcmp`: 뺄셈으로 비교 결과를 표현할 때의 함정
 
 ```c
 // src/memory/ft_memory_scan.c

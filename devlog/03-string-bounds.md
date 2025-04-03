@@ -2,7 +2,9 @@
 
 `ft_strlcpy`/`ft_strlcat`은 표준 `strcpy`/`strcat`이 아니라 BSD의 `strlcpy`/`strlcat`(용량 상한을 받는 버전)을 재구현한다. 이 문서는 그 "용량 상한"이 실제로 무엇을 막아주는지에 집중한다.
 
-## 항상 널 종료 자리 한 칸을 남겨둔다
+## 1. `feat(string): 문자열 길이 계산과 제한 복사/붙이기 추가`
+
+### 1. 항상 널 종료 자리 한 칸을 남겨둔다
 
 ```c
 // src/string/ft_string_bounds.c
@@ -26,7 +28,7 @@ size_t ft_strlcpy(char *dest, const char *src, size_t capacity) {
 
 반환값은 실제로 복사한 길이가 아니라 "`capacity` 제약이 없었다면 필요했을 전체 길이"(`src_length`)를 반환한다. 그래서 호출자는 `if (ft_strlcpy(dest, src, capacity) >= capacity)`처럼 "잘렸는지 여부"를 반환값 하나로 판단할 수 있다.
 
-## `ft_strlcat`의 "이미 깨진 입력" 방어
+### 2. `ft_strlcat`의 "이미 깨진 입력" 방어
 
 ```c
 if (dest_length == capacity)

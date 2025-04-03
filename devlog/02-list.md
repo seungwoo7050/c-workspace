@@ -2,7 +2,9 @@
 
 `t_list`(연결 리스트) 관련 함수들(`ft_lstnew`/`ft_lstadd_front`/`ft_lstadd_back`/`ft_lstsize`/`ft_lstlast`)은 대부분 "포인터를 하나씩 따라가며 앞뒤를 잇는다"는 정석적인 조립일 뿐이다. 이 문서는 그 조립보다, 리스트를 "안전하게 해제"하고 "실패해도 일관된 상태로 되돌리는" 것에 집중한다.
 
-## `ft_lstclear`: 해제하기 전에 다음 노드를 먼저 기억해둔다
+## 1. `feat(list): 연결 리스트 순회와 삭제 구현`
+
+### `ft_lstclear`: 해제하기 전에 다음 노드를 먼저 기억해둔다
 
 ```c
 // src/list/ft_list_lifecycle.c
@@ -25,7 +27,9 @@ void ft_lstclear(t_list **list, void (*del)(void *)) {
 
 순서를 뒤집어서 `ft_lstdelone(*list, del)`을 먼저 부르고 나중에 `(*list)->next`를 읽으면, 이미 `free()`된 메모리를 다시 읽는 use-after-free가 된다. 이는 메모리가 아직 덮어써지지 않았다면 우연히 "동작하는 것처럼 보일" 수도 있어서, 더 위험한 종류의 버그다. **"해제 대상을 참조하는 값은, 해제하기 전에 먼저 꺼내둔다"**는 원칙 하나로 이 문제 전체가 사라진다.
 
-## `ft_lstmap`: 중간에 실패하면 절반짜리 리스트를 남기지 않는다
+## 2. `feat(list): 실패 시 정리되는 리스트 변환 구현`
+
+### `ft_lstmap`: 중간에 실패하면 절반짜리 리스트를 남기지 않는다
 
 ```c
 // src/list/ft_list.c
