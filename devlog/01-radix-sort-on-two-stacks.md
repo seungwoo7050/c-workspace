@@ -1,6 +1,6 @@
 # Dev Log 01. Sorting with only rotate and push: why radix sort fits
 
-## `feat(sort): 큰 입력을 기수 정렬로 처리`
+## 1. `feat(sort): 큰 입력을 기수 정렬로 처리`
 
 ```c
 static void radix_sort(t_stack *a, t_stack *b)

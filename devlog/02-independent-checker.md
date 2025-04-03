@@ -1,6 +1,6 @@
 # Dev Log 02. The checker never trusts push_swap's own logic
 
-## `feat(checker): 명령 실행 결과를 판정`
+## 1. `feat(checker): 명령 실행 결과를 판정`
 
 ```c
 // main의 이 시그니처는 프로그램 실행 시 커맨드라인 인자를 받는 표준 형태다
